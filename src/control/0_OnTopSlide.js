@@ -570,24 +570,25 @@ function DataSlide ({show, close=()=>{}}) {
                     className={clsx(style.list_word)}
                 >
                     {i+1}_ {word.word}: {word.mean}
-                    <span 
+                    <span style={{right: "120px"}}>{word.wordId}</span>
+                    <div 
                         className={clsx(style.list_option, style.list_edit)}
                         onClick={() => handleOptionEdit(i)}
-                    >※</span>
+                    >※</div>
                     {
                         data.words.length === 1 ?
-                        <span 
+                        <div 
                             className={clsx(style.list_option_block, style.list_clear)}
-                        >×</span> :
-                        <span 
+                        >×</div> :
+                        <div 
                             className={clsx(style.list_option, style.list_clear)}
                             onClick={() => handelOptionClear(i)}
-                        >×</span>
+                        >×</div>
                     }
-                    <span 
+                    <div 
                         className={clsx(style.list_option, style.list_go)}
                         onClick={() => {dispatch(toHere(i)); close()}}
-                    >→</span>
+                    >→</div>
                 </div>)}
                 <div className={clsx(style.list_addWord)} onClick={() => handleAddWord()}>+</div>
             </div>
