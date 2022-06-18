@@ -11,7 +11,7 @@ function OtherSlide ({show, close=()=>{}}) {
     const loadUserData = () => {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+        .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
     }
     const handleAlert = (mess) => {
@@ -36,6 +36,7 @@ function OtherSlide ({show, close=()=>{}}) {
         .then(() => {
             handleAlert("successful")
             loadUserData()
+            console.log("added new word")
         })
     }
 

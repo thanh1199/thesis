@@ -23,7 +23,7 @@ function Login () {
     useEffect(() => {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(getAllUser(obj))})
+        .then((obj) => {dispatch(getAllUser(obj)); console.log("loaded all of users, ready for login")})
         .catch(error => console.log(error))
     }, [dispatch])
     const [isLogin, setIsLogin] = useState(false)
@@ -72,7 +72,7 @@ function Login () {
         if (yes !== undefined) {
             fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET' })
             .then((response) => response.json())
-            .then((obj) => {dispatch(reloadData(obj)); console.log("loaded for "+loginId)})
+            .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+loginId)})
             .catch(error => console.log(error))
             
             handleAlert("successful")
@@ -94,8 +94,9 @@ function Login () {
         .then(() => {
             fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
             .then((response) => response.json())
-            .then((obj) => {dispatch(getAllUser(obj))})
+            .then((obj) => {dispatch(getAllUser(obj)); console.log("loaded all of new users")})
             .catch(error => console.log(error))
+            console.log("confirm sign up")
         })
         setLoginPassword("")
         setIsLogin(false)

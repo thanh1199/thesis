@@ -15,7 +15,7 @@ function Important () {
             .then(() => {
                 fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password, { method: 'GET' })
                 .then((response) => response.json())
-                .then((obj) => {dispatch(reloadData(obj)); console.log(obj)})
+                .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
                 .catch(error_ => console.log(error_))
             })
             .catch(error => console.log(error))

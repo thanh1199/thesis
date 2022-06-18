@@ -18,7 +18,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
     const loadUserData = () => {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+        .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all data for "+obj.userId)})
         .catch(error => console.log(error))
     }
     
@@ -72,6 +72,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
         fetch(u, {method: 'GET'})
         .then (() => {
             loadUserData()
+            console.log("deleted Com/Exa and loaded "+data.userId+"'s all of Com/Exa")
         })
     }
     const comExaIdToTime = (comExaId, name) => {
@@ -93,6 +94,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
             })
             .then(() => {
                 loadUserData()
+                console.log("added Com/Exa and loaded "+data.userId+"'s all of new Com/Exa")
             })
         } else {
             const urlEdit = urlAddComExa+"&editId="+document.getElementById('editId').innerHTML
@@ -102,6 +104,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
             })
             .then(() => {
                 loadUserData()
+                console.log("editted Com/Exa and loaded "+data.userId+"'s all of new Com/Exa")
             })
         }
         document.getElementById('editOption').innerHTML = ""
@@ -182,7 +185,7 @@ function EditAddSlide ({name="", close = () => {}}) {
     const loadUserData = () => {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+        .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
     }
 
@@ -234,6 +237,7 @@ function EditAddSlide ({name="", close = () => {}}) {
             })
             .then(() => {
                 handleAlert("successful")
+                console.log("editted for user")
                 loadUserData()
                 close()
             })
@@ -310,6 +314,7 @@ function EditAddSlide ({name="", close = () => {}}) {
             .then(() => {
                 handleAlert("successful")
                 loadUserData()
+                console,log("added new word and loaded "+data.userId+" all of new data")
             })
             setWord("")
             setMean("")
@@ -390,14 +395,14 @@ function ClearSlide ({ close=() => {} }) {
     const loadUserData = () => {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+        .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
     }
     const handleClear = () => {
         fetch(urlDeleteWord, {
             method: 'POST',
         })
-        .then(() => {loadUserData()})
+        .then(() => {loadUserData(); console.log("deleted word and loaded all of new words")})
         .then(() => {
             handleAlert("successful")
             dispatch(toHere(now===0? 0: now-1))
@@ -504,7 +509,10 @@ function DataSlide ({show, close=()=>{}}) {
             .then(() => {
                 fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET' })
                 .then((response) => response.json())
-                .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+                .then((obj) => {
+                    dispatch(reloadData(obj))
+                    console.log("changed new paddword and loaded all of data for "+obj.userId)
+                })
                 .catch(error => console.log(error))
                 setNewP("")
                 setOldP("")

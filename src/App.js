@@ -39,12 +39,16 @@ function App() {
           })
           return obj_noDuplicate
       })
-      .then((obj) => {dispatch(reloadOther(obj)); console.log(obj)})
+      .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words and don't contain this user's words without no duplicate")})
       .catch(error => console.log(error))
     }
     if (type === "avoidAdminPassword") {
       var allUserAvoidAdmin = allUser.filter((user) => user.userId!=="ADMIN")
       dispatch(getAllUser(allUserAvoidAdmin))
+      fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allWords", { method: "GET" })
+      .then((response) => response.json())
+      .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
+      .catch(error => console.log(error))
     }
   }
   const alert = useSelector(state => state.alert)
