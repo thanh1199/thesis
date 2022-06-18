@@ -1,0 +1,127 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+input, textarea {
+    font-family: 'Zen Kurenaido', sans-serif;
+    font-size: 18px;
+}
+::-webkit-scrollbar {
+    width: 2px; 
+    height: 2px;   
+}
+::-webkit-scrollbar-track {
+    background: hsla(0, 0%, 59%, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(167, 167, 167);
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(31, 31, 31);
+}
+
+body {
+    font-family: 'Zen Kurenaido', sans-serif;
+    width: 100vw;
+
+    overflow-x: hidden;
+}
+
+#intro {
+    height: 10vh;
+    padding: 0 4vw;
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 20px;
+}
+.intro_ {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+#appName {
+    font-family: 'Water Brush', cursive;
+    font-size: 30px;
+    pointer-events: none;
+}
+#slogant {
+    font-size: 25px;
+    pointer-events: none;
+}
+#moreInfo {
+    text-align: right;
+    cursor: pointer;
+    transition: ease 0.2s;
+}
+#moreInfo:hover {
+    color: rgb(195, 0, 255);
+}
+#main {
+    width: fit-content;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#moreInfo_ {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* font-family: 'Noto Serif JP', serif; */
+    transition: ease 0.3s;
+}
+.unShow {
+    display: none;
+}
+.moreInfo_blur {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(1px);
+}
+#close {
+    position: relative;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-image: linear-gradient(to bottom, rgb(255, 114, 114), white);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 5vw;
+    border-radius: 20px 20px 0 0;
+    cursor: pointer;
+    transition: ease 0.3s;
+}
+#close:hover {
+    transform: translateY(5px);
+    color: brown;
+}
+.box {
+    position: relative;
+    padding: 20px;
+    margin: 0 5vw 5vh 5vw;
+    width: 90vw;
+    height: 90vh;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 20px 0 20px 20px;
+    line-height: 28px;
+}
+
+@media (max-width: 600px) {
+    #intro {
+        display: flex;
+        justify-content: space-between;
+    }
+    .intro_:nth-child(2) {
+        display: none;
+    }
+}

@@ -1,0 +1,67 @@
+import { useDispatch, useSelector } from "react-redux"
+import { toAlert } from "../reduxToolkit/11_Alert"
+import { reloadData } from "../reduxToolkit/0_data"
+import clsx from "clsx"
+import style from "../style.module.scss"
+
+function OtherSlide ({show, close=()=>{}}) {
+    const dispatch = useDispatch()
+    const data = useSelector(state => state.data)
+    const other = useSelector(state => state.other)
+    const loadUserData = () => {
+        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
+        .then((response) => response.json())
+        .then((obj) => {dispatch(reloadData(obj)); console.log(data)})
+        .catch(error => console.log(error))
+    }
+    const handleAlert = (mess) => {
+        dispatch(toAlert(mess))
+        const showAlert = setTimeout(() => {
+            dispatch(toAlert(mess))
+            return clearTimeout(showAlert)
+        }, 2000)
+    }
+
+    const urlAddWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWord&userId="+data.userId
+    const handleAdd = (i) => {
+        var contentAdd = new FormData()
+        contentAdd.append('word', other[i].word)
+        contentAdd.append('mean', other[i].mean)
+        contentAdd.append('comment', "")
+        contentAdd.append('example', "")
+        fetch(urlAddWord, {
+            method: 'POST',
+            body: contentAdd
+        })
+        .then(() => {
+            handleAlert("successful")
+            loadUserData()
+        })
+    }
+
+    return (
+        <div className={clsx(style.onTop, show? "":style.onTopHidden)} >
+            <div className={clsx(style.onTop_blur)}></div>
+            <div className={clsx(style.onTop_close)} onClick={() => close()} >Close Vocabulary </div>
+            <div className={clsx(style.onTop_box)} style={{height: "80vh", borderRadius: "20px 0 20px 20px"}}>{
+                other.map((word, i) => <div 
+                    key={i} 
+                    className={clsx(style.list_word)}
+                >
+                    {i+1}_ {word.word}: {word.mean}
+                    <span>{word.userId}</span>
+                    <div 
+                        className={clsx(
+                            style.list_option, 
+                            data.words.find((wordInData) => wordInData.word===word.word) === undefined ?
+                            style.list_go : style.list_haven
+                        )}
+                        onClick={() => handleAdd(i)}
+                    >{data.words.find((wordInData) => wordInData.word===word.word) === undefined ? "+" : "✔️"}</div>
+                </div>)
+            }</div>
+        </div>
+    )
+}
+
+export default OtherSlide

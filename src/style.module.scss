@@ -1,0 +1,700 @@
+.alertSuccessful {
+    position: fixed;
+    z-index: 1000;
+    top: 10vh;
+    right: 0;
+    background-color: rgba(0, 170, 144, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px;
+    transition: ease 1s;
+    opacity: 0;
+    transform: translateX(250px);
+    box-shadow: 0px 0px 3px 2px rgba(166, 255, 209, 0.8), 0px 0px 5px 15px rgba(159, 255, 226, 0.4);
+}
+.alertPasswordMissing {
+    position: fixed;
+    z-index: 1000;
+    top: 10vh;
+    right: 0;
+    background-color: rgba(184, 0, 0, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px;
+    transition: ease 1s;
+    opacity: 0;
+    transform: translateX(250px);
+    box-shadow: 0px 0px 3px 2px rgba(255, 115, 115, 0.8), 0px 0px 5px 15px rgba(255, 159, 159, 0.4);
+}
+.alertShow {
+    opacity: 1;
+    transform: translateX(0);
+}
+.topControl {
+    display: flex;
+    flex-direction: row;
+}
+.dataSlide {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: .5px solid black;
+    transition: ease 0.1s;
+    width: fit-content;
+    max-width: 40vw;
+    &:hover {
+        background-color: rgb(68, 0, 87);
+        color: white;
+        transform: translateX(5px);
+    }
+}
+#app {
+    transition: ease 0.3s;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.importantSpace {
+    height: 10vh;
+}
+.importantWord {
+    background-image: linear-gradient(to bottom, rgb(255, 237, 202),rgb(255, 247, 220), white);
+}
+.ask {
+    padding: 40px 0;
+    font-weight: bold;
+    font-size: 10vh;
+    text-align: center;
+}
+.answer {
+    padding: 2vh 0;
+    font-size: 30px;
+    text-align: center;
+    outline: none;
+    border: solid 0.2px rgb(215, 215, 215);
+}
+.finish {
+    padding-top: 20px;
+    color: rgb(0, 116, 96);
+    font-weight: bolder;
+    font-size: 30px;
+    text-align: center;
+}
+.result {
+    height: 10vh;
+    font-size: 30px;
+    text-align: center;
+    pointer-events: none;
+    transition: ease 0.3s;
+}
+.resultIncorrect {
+    color: rgb(141, 0, 0);
+    background-image: linear-gradient(to top,rgb(255, 204, 199), white);
+}
+.resultCorrect {
+    color: rgb(0, 129, 146);
+    background-image: linear-gradient(to top,rgb(186, 255, 253), white);
+}
+#control {
+    width: 100vw;
+    height: 10vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    font-size: 20px;
+    
+    .ctrl {
+        padding: 0 10px;
+        cursor: pointer;
+        transition: ease 0.2s;
+        margin-top: auto;
+        margin-bottom: auto;
+        &:hover {
+            transform: translateY(-3px);
+            color: rgb(0, 102, 255);
+        }
+    }
+    .importantActive {
+        color: rgb(255, 153, 0);
+        background-color: rgb(255, 247, 170);
+        border-radius: 20px;
+    }
+    #ctrlImportant:hover {
+        color: rgb(255, 153, 0);
+    }
+
+    #ctrlSearch {
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    #ctrlEdit {
+        border: 1px solid rgb(0, 171, 209);
+        border-radius: 20px;
+        &:hover {
+            color: rgb(0, 118, 122);
+            background-color: rgb(215, 249, 255);
+            border: solid 1px rgb(215, 249, 255);
+        }
+    }
+
+    #ctrlAdd {
+        border: 1px solid rgb(27, 181, 0);
+        border-radius: 20px;
+        &:hover {
+            color: rgb(0, 94, 12);
+            background-color: rgb(220, 255, 215);
+            border: solid 1px rgb(220, 255, 215);
+        }
+    }
+
+    #ctrlClear {
+        border: 1px solid rgb(176, 0, 0);
+        border-radius: 20px;
+        &:hover {
+            color: rgb(172, 0, 0);
+            background-color: rgb(255, 215, 215);
+            border: solid 1px rgb(255, 215, 215);
+        }
+    }
+}
+@media (max-width: 600px) {
+    #control {
+        height: 15vh;
+    }
+}
+.onTopHidden {
+    top: -110vh !important;
+}
+.onTop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    font-size: 18px;
+    transition: ease 0.3s;
+    .onTop_blur {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(1px);
+    }
+    .onTop_close {
+        position: relative;
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-image: linear-gradient(to bottom, rgb(255, 114, 114), white);
+        width: fit-content;
+        margin-left: auto;
+        margin-right: 5vw;
+        border-radius: 20px 20px 0 0;
+        cursor: pointer;
+        transition: ease 0.3s;
+        &:hover {
+            transform: translateY(5px);
+            color: brown;
+        }
+    }
+    .onTop_box {
+        position: relative;
+        padding: 0 20px;
+        margin: 0 5vw;
+        width: 90vw;
+        height: 65vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background-color: white;
+        border-radius: 20px 0 0 0;
+        line-height: 28px;
+        .options {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 12px;
+            position: relative;
+            text-align: right;
+            margin-top: 20px;
+            padding: 0 0 0 10px;
+            border-top: 0.5px solid rgb(160, 160, 160);
+            transition: ease 0.3s;
+            background-image: linear-gradient(to right, rgb(248, 228, 255), rgb(255, 255, 255));
+            cursor: pointer;
+            color: rgb(68, 0, 81);
+            &:hover {
+                background-image: none;
+                background-color: rgb(251, 218, 255);
+            }
+            .edit, .delete {
+                font-size: 14px;
+                transition: ease .5s;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                right: -15%;
+                text-align: center;
+                padding: 0 10px;
+                border-radius: 20px;
+            }
+            .editShow {
+                opacity: 1;
+                right: 85px;
+                &:hover {
+                    background-color: rgb(168, 24, 194);
+                    color: rgb(255, 255, 255);
+                }
+            }
+            .deleteShow {
+                opacity: 1;
+                right: 20px;
+                &:hover {
+                    background-color: rgb(168, 24, 194);
+                    color: rgb(255, 255, 255);
+                }
+            }
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            min-height: 70vh;
+            label {
+                display: block;
+                text-align: left;
+                padding: 0 40px;
+                background-image: linear-gradient(to right, rgb(243, 218, 255), rgb(255, 255, 255));
+            }
+            input {
+                border: none;
+                outline: none;
+                padding: 0 20px;
+                border-bottom: 0.5px solid #aaa;
+                margin: 10px 0;
+            }
+        }
+        .list_UserId {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            border-bottom: 0.5px solid black;
+            line-break:strict;
+            justify-content: space-around;
+        }
+        .list_headerButton {
+            display: inline-block;
+            border: solid 0.5px black;
+            outline: none;
+            background-color: unset;
+            margin: 10px;
+            padding: 0 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: ease 0.3s;
+            &:hover {
+                background-color: rgb(69, 0, 88);
+                color: white;
+            }
+        }
+        .list_ChangePassBox {
+            position: fixed;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(224, 123, 255, 0.2);
+            backdrop-filter: blur(1px);
+            transition: ease 0.3s;
+            transform: translateY(-100vh);
+            padding: 30vh 0;
+            text-align: center;
+            label {
+                display: inline-block;
+                width: fit-content;
+                padding: 5px 10px;
+                margin: 10px;
+                background-image: linear-gradient(to top, rgb(235, 188, 255), rgba(255, 255, 255, 0));
+                color: black;
+                border-radius: 30px;
+            }
+            input {
+                background-color: unset;
+                outline: none;
+                border: none;
+                border-bottom: solid 1px black;
+                width: 200px;
+            }
+            .changePassButton {
+                width: fit-content;
+                margin: 20px 0 0 50%;
+                transform: translateX(-50%);
+                padding: 5px 20px;
+                border-radius: 20px;
+                background-color: unset;
+                border: solid 0.5px black;
+                cursor: pointer;
+                transition: ease 0.1s;
+                &:hover {
+                    background-color: rgb(69, 0, 94);
+                    color: white;
+                }
+            }
+            .unClick {
+                cursor: no-drop;
+                background-color: unset !important;
+                color: black !important;
+                opacity: 0.3;
+            }
+        }
+        .list_ChangePassShow {
+            transform: translateY(0);
+        }
+        .list_word {
+            position: relative;
+            transition: ease 0.1s;
+            margin: 3px 0;
+            padding: 25px 10px 5px 10px;
+            border-radius: 20px;
+            &:nth-child(odd) {
+                background-color: #eee;
+            }
+            span {
+                position: absolute;
+                top: 5px;
+                right: 50px;
+                font-size: 12px;
+            }
+        }
+        .list_option {
+            position: absolute;
+            top: 2px;
+            display: inline-block;
+            border-radius: 20px;
+            padding: 0 5px;
+            transition: ease 0.1s;
+            background-color: #eee;
+            opacity: 0.5;
+            &:hover {
+                opacity: 1;
+                color: black !important;
+            }
+        }
+        .list_option_block {
+            position: absolute;
+            top: 0;
+            display: inline-block;
+            border-radius: 20px;
+            padding: 0 5px;
+            transition: ease 0.1s;
+            background-color: #eee !important;
+            color: #aaa !important;
+            opacity: 0.5;
+            cursor: no-drop;
+        }
+        .list_edit {
+            right: 80px;
+            color: rgb(0, 116, 142);
+            &:hover {
+                background-color: rgb(0, 169, 207);
+            }
+        }
+        .list_clear {
+            right: 45px;
+            color: rgb(141, 0, 0);
+            &:hover {
+                background-color: rgb(255, 84, 84);
+            }
+        }
+        .list_go {
+            right: 10px;
+            color: rgb(0, 141, 19);
+            &:hover {
+                background-color: rgb(0, 164, 5);
+            }
+        }
+        .list_haven {
+            opacity: 1;
+            top: 10;
+            right: 10px;
+            color: black;
+            cursor: no-drop;
+            background-color: rgb(0, 164, 5);
+        }
+        .list_addWord {
+            width: fit-content;
+            padding: 3px 30px;
+            margin-top: 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 1px solid rgb(0, 81, 68);
+            transition: ease 0.1s;
+            &:hover {
+                background-color: rgb(0, 81, 68);
+                color: white;
+            }
+        }
+    }
+    .onTop_func {
+        position: relative;
+        height: 20vh;
+        padding: 5px 20px;
+        border-radius: 0 0 20px 20px;
+        margin: 0 5vw;
+        background-color: white;
+        border-top: 1px solid rgb(190, 190, 190);
+        .onTop_isEdit {
+            position: absolute;
+            top: -14px;
+            left: 0;
+            padding: 0 10px;
+            margin: 0 auto 0 5vw;
+            width: fit-content;
+            border-radius: 16px;
+            background-color: rgb(255, 255, 255);
+            font-size: 12px;
+            transition: ease 0.3s;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(255, 189, 189);
+                color: rgb(148, 0, 0);
+            }
+        }
+        .inputComExa {
+            border: none;
+            border-bottom: 1px solid rgb(190, 190, 190);
+            outline: none;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .inputSubmit {
+        display: block;
+        color: rgb(0, 94, 12);
+        background-color: rgb(219, 255, 211);
+        margin-top: 10px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        border-radius: 20px;
+        border: unset !important;
+        outline: none;
+        padding: 5px 20px !important;
+        transition: ease 0.1s;
+        &:hover {
+            background-color: rgb(119, 215, 104);
+        }
+    }
+    .block {
+        background-color: #aaa !important;
+        opacity: 0.7;
+        cursor: no-drop;
+    }
+}
+.adminSlide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: ease 0.3s;
+    .adminSlideBlur {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(1px);
+    }
+    .adminBox {
+        position: relative;
+        z-index: 10;
+        color: black !important;
+        margin: 1vh 2vw;
+        background-image: linear-gradient(to top left, rgb(200, 255, 252), rgb(255, 225, 255));
+        width: 96vw;
+        height: 98vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border-radius: 30px;
+        padding: 60px 30px 10px 30px;
+        transition: ease 0.3s;
+    }
+    .control {
+        position: absolute;
+        top: 20px;
+        padding: 5px;
+        border: solid 1px white;
+        width: fit-content;
+        border-radius: 20px;
+        transition: ease 0.2s;
+        background-color: rgba(255, 255, 255, 0.3);
+        &:hover {
+            background-color: white;
+        }
+    }
+    .close {
+        right: 40px;
+    }
+    .showAllWords {
+        right: 100px;
+    }
+    .adminLog {
+        position: relative;
+        padding: 25px 5px 5px 5px;
+        border-radius: 15px;
+        &:nth-child(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        span {
+            position: absolute;
+            top: 5px;
+            right: 50px;
+            font-size: 12px;
+        }
+        .log_option {
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            display: inline-block;
+            border-radius: 20px;
+            padding: 0 5px;
+            transition: ease 0.1s;
+            background-color: #eee;
+            opacity: 0.5;
+            &:hover {
+                opacity: 1;
+                color: black !important;
+            }
+        }
+        .log_go {
+            right: 10px;
+            color: rgb(0, 141, 19);
+            &:hover {
+                background-color: rgb(0, 164, 5);
+            }
+        }
+        .log_haven {
+            opacity: 1;
+            top: 10;
+            right: 10px;
+            color: black;
+            cursor: no-drop;
+            background-color: rgb(0, 164, 5);
+        }
+    }
+    .adminLogHover {
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+        }
+    }
+    .adminSubBox {
+        position: fixed;
+        z-index: 30;
+        top: 1vh;
+        left: 2vw;
+        width: 96vw;
+        height: 98vh;
+        overflow-y: scroll;
+        background-color: white;
+        padding: 60px 30px 10px 30px;
+        border-radius: 20px;
+        transition: ease 0.3s;
+        .closeBox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: solid 1px rgb(87, 0, 117);
+            &:hover {
+                color: white;
+                background-color: rgb(81, 0, 115);
+            }
+        }
+        .kickOut {
+            position: absolute;
+            top: 20px;
+            right: unset;
+            left: 20px;
+            border: solid 1px rgb(153, 0, 0);
+            background-color: rgb(255, 185, 185);
+            &:hover {
+                color: white;
+                background-color: rgb(130, 0, 0);
+            }
+        }
+    }
+    .adminSubBoxHidden {
+        top: -110vh !important;
+    }
+}
+.adminSlideHidden {
+    top: -110vh !important;
+}
+.login {
+    width: 100vw;
+    height: 100%;
+    padding: 0 10vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    label {
+        color: rgb(168, 0, 223);
+    }
+    input {
+        border: none;
+        outline: none;
+        padding: 0 10px;
+        border-bottom: solid 1px black;
+        width: 70vw;
+        min-width: 320px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        font-size: 20px;
+    }
+    .button {
+        border: solid 1px rgb(118, 0, 164);
+        padding: 10px 20px;
+        display: block;
+        width: fit-content !important;
+        background-color: rgb(246, 222, 255);
+        border-radius: 30px;
+        transition: ease 0.2s;
+        cursor: pointer;
+        &:hover {
+            background-color: rgb(118, 0, 164);
+            color: white;
+        }
+    }
+    .buttonBlock {
+        border: solid 1px rgb(68, 68, 68);
+        padding: 10px 20px;
+        display: block;
+        width: fit-content !important;
+        background-color: rgb(185, 185, 185);
+        border-radius: 30px;
+        cursor: no-drop;
+    }
+    .forgotPassword {
+        text-align: right;
+        transition: ease 0.2s;
+        &:hover {
+            color: rgb(118, 0, 164);
+        }
+    }
+}
