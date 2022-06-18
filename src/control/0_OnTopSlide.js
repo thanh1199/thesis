@@ -314,7 +314,7 @@ function EditAddSlide ({name="", close = () => {}}) {
             .then(() => {
                 handleAlert("successful")
                 loadUserData()
-                console,log("added new word and loaded "+data.userId+" all of new data")
+                console.log("added new word and loaded "+data.userId+" all of new data")
             })
             setWord("")
             setMean("")
