@@ -4,12 +4,21 @@ import style from "../style.module.scss"
 import { useDispatch } from "react-redux"
 import { reloadData } from "../reduxToolkit/0_data"
 import { toHere } from "../reduxToolkit/2-4_MoveSlice"
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { toAlert } from "../reduxToolkit/11_Alert"
 import { setShowAdd } from "../reduxToolkit/9_AddSlice"
 import { setShowEdit } from "../reduxToolkit/8_EditSlice"
 import { setShowClear } from "../reduxToolkit/10_ClearSlice"
+
+
+const handleAlert = ([type,mess], dispatch=()=>{}) => {
+    dispatch(toAlert([type,mess]))
+    const showAlert = setTimeout(() => {
+        dispatch(toAlert([type,mess]))
+        return clearTimeout(showAlert)
+    }, 3000)
+}
 
 function ComExaSilde ({ name="", close=()=>{} }) {
     const dispatch = useDispatch()
@@ -161,8 +170,15 @@ function ComExaSilde ({ name="", close=()=>{} }) {
                     <input 
                         type="button" 
                         value="Push" 
-                        className={clsx(style.inputSubmit)} 
-                        onClick={() => handleSubmit()}
+                        className={clsx(style.inputSubmit, text==="" ? style.block : "")} 
+                        onClick={text==="" ? () => {} : () => handleSubmit()}
+                        style={{
+                            position: "fixed", 
+                            bottom: "6vh", 
+                            left: "50vw", 
+                            transform: "translateX(-50%)", 
+                            zIndex: "1"
+                        }}
                     />
                 </form>
             </div>
@@ -173,13 +189,6 @@ function ComExaSilde ({ name="", close=()=>{} }) {
 
 function EditAddSlide ({name="", close = () => {}}) {
     const dispatch = useDispatch()
-    const handleAlert = (mess) => {
-        dispatch(toAlert(mess))
-        const showAlert = setTimeout(() => {
-            dispatch(toAlert(mess))
-            return clearTimeout(showAlert)
-        }, 2000)
-    }
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const loadUserData = () => {
@@ -231,15 +240,15 @@ function EditAddSlide ({name="", close = () => {}}) {
         })
         
         const handleEdit = () => {
+            close()
             fetch(urlEditWord, {
                 method: 'POST',
                 body: contentEdit
             })
             .then(() => {
-                handleAlert("successful")
-                console.log("editted for user")
+                handleAlert(["success","Editted successfully"], dispatch)
+                console.log("editted word")
                 loadUserData()
-                close()
             })
         }
 
@@ -312,7 +321,7 @@ function EditAddSlide ({name="", close = () => {}}) {
                 body: contentAdd
             })
             .then(() => {
-                handleAlert("successful")
+                handleAlert(["success","Added new word successfully"], dispatch)
                 loadUserData()
                 console.log("added new word and loaded "+data.userId+" all of new data")
             })
@@ -382,13 +391,6 @@ function EditAddSlide ({name="", close = () => {}}) {
 
 function ClearSlide ({ close=() => {} }) {
     const dispatch = useDispatch()
-    const handleAlert = (mess) => {
-        dispatch(toAlert(mess))
-        const showAlert = setTimeout(() => {
-            dispatch(toAlert(mess))
-            return clearTimeout(showAlert)
-        }, 2000)
-    }
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const urlDeleteWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=clearWord&userId="+data.userId+"&wordId="+data.words[now].wordId
@@ -404,7 +406,7 @@ function ClearSlide ({ close=() => {} }) {
         })
         .then(() => {loadUserData(); console.log("deleted word and loaded all of new words")})
         .then(() => {
-            handleAlert("successful")
+            handleAlert(["success","Deleted successfully"], dispatch)
             dispatch(toHere(now===0? 0: now-1))
             close()
         })
@@ -471,53 +473,95 @@ function ClearSlide ({ close=() => {} }) {
 function DataSlide ({show, close=()=>{}}) {
     const dispatch = useDispatch()
     const data = useSelector(state => state.data)
-    const handleAlert = (mess) => {
-        dispatch(toAlert(mess))
-        const showAlert = setTimeout(() => {
-            dispatch(toAlert(mess))
-            return clearTimeout(showAlert)
-        }, 2000)
-    }
+    const allUser = useSelector(state => state.allUser)
     const [changePass, setChangePass] = useState(false)
+    const [changeId, setChangeId] = useState(false)
+    const [deleteAccount, setDeleteAccount] = useState(false)
     const handleChangePass = () => {
         setChangePass(!changePass)
     }
-    const handleLogout = () => {
-        close()
-        dispatch(reloadData({}))
-        localStorage.setItem("userId", "")
+    const handleChangeId = () => {
+        setChangeId(!changeId)
+    }
+    const handleLogout = (reLogin="") => {
+        if (reLogin==="") {
+            close()
+            dispatch(reloadData({}))
+        }
+        localStorage.setItem("userId", reLogin)
     }
     const [oldP, setOldP] = useState("")
     const [newP, setNewP] = useState("")
-    const handleTypingOld = (e) => {
+    const [newI, setNewI] = useState("")
+    const [isSameId, setIsSameId] = useState(false)
+    const handleTypingOldPassword = (e) => {
         setOldP(e.target.value)
     }
-    const handleTypingNew = (e) => {
+    const handleTypingNewPassword = (e) => {
         setNewP(e.target.value)
     }
-    const changePassword = () => {
-        if (oldP !== data.password) {
-            handleAlert("passwordMissing")
-            setOldP("")
+    const handleTypingNewId = (e) => {
+        if (e.target.value.includes(",")) {
+            handleAlert(["fail","ID can't include comma /,/"], dispatch)
         } else {
-            var newPassword = new FormData()
-            newPassword.append("newPassword", newP)
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=changePassword&userId="+data.userId+"&password="+data.password , { 
+            setNewI(e.target.value)
+        }
+        if (allUser.find((user) => user.userId===e.target.value) !== undefined || 
+            e.target.value==="ADMIN" ||
+            e.target.value==="admin") {
+            setIsSameId(true)
+            handleAlert(["fail","The same ID is existing"], dispatch)
+        } else {
+            setIsSameId(false)
+        }
+    }
+    const changePasswordOrId = (what) => {
+        if (what === "password") {
+            if (oldP !== data.password) {
+                handleAlert(["fail","Old Password is wrong"], dispatch)
+                setOldP("")
+            } else {
+                handleChangePass()
+                setOldP(newP)
+                var newPassword = new FormData()
+                newPassword.append("newPassword", newP)
+                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=changePassword&userId="+data.userId+"&password="+data.password , { 
+                    method: 'POST',
+                    body: newPassword,
+                })
+                .then(() => {
+                    fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET' })
+                    .then((response) => response.json())
+                    .then((obj) => {
+                        dispatch(reloadData(obj))
+                        console.log("changed new paddword and loaded all of data for "+obj.userId)
+                    })
+                    .catch(error => console.log(error))
+                    setNewP("")
+                    setOldP("")
+                    handleAlert(["success","Changed Password successfully"], dispatch)
+                })
+            }
+        } else if (what === "id") {
+            handleChangeId()
+            setIsSameId(true)
+            var newId = new FormData()
+            newId.append("newId", newI)
+            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=changeId&userId="+data.userId+"&password="+data.password , { 
                 method: 'POST',
-                body: newPassword,
+                body: newId,
             })
             .then(() => {
-                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET' })
+                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+newI+"&password="+data.password , { method: 'GET' })
                 .then((response) => response.json())
                 .then((obj) => {
                     dispatch(reloadData(obj))
-                    console.log("changed new paddword and loaded all of data for "+obj.userId)
+                    console.log("changed new id and loaded all of data for "+obj.userId)
                 })
                 .catch(error => console.log(error))
-                setNewP("")
-                setOldP("")
-                handleAlert("successful")
-                handleChangePass()
+                setNewI("")
+                handleAlert(["success","Changed ID successfully"], dispatch)
+                handleLogout(newI)
             })
         }
     }
@@ -540,26 +584,53 @@ function DataSlide ({show, close=()=>{}}) {
             <div className={clsx(style.onTop_box)} style={{height: "80vh", borderRadius: "20px 0 20px 20px"}}>
                 <form 
                     className={clsx(
-                        style.list_ChangePassBox, 
-                        changePass ? 
-                        style.list_ChangePassShow : ''
+                        style.list_ChangeBox, 
+                        changeId ? 
+                        style.list_ChangeShow : ''
                     )}
                 >
                     <label>Old</label>
-                    <input type="password" value={oldP} onChange={(e) => handleTypingOld(e)} /><br/>
+                    <input type="text" value={data.userId} onChange={() => {}} style={{pointerEvents: "none"}} /><br/>
                     <label>New</label>
-                    <input type="password" value={newP} onChange={(e) => handleTypingNew(e)} />
+                    <input type="text" value={newI} onChange={(e) => handleTypingNewId(e)} />
                     <div 
                         className={clsx(
-                            style.changePassButton, 
-                            newP===""||oldP==="" ? style.unClick : ""
+                            style.changeButton, 
+                            newI==="" || isSameId ? style.unClick : ""
                         )} 
-                        onClick={newP===""||oldP==="" ? ()=>{} : ()=>changePassword()}
+                        onClick={newI==="" || isSameId || data.userId === "ADMIN" ? ()=>{} : () => changePasswordOrId("id")}
+                    >Change Id</div>
+                    <div className={clsx(style.changeButton)} onClick={() => handleChangeId()}>Cancle</div>
+                </form>
+                <form 
+                    className={clsx(
+                        style.list_ChangeBox, 
+                        changePass ? 
+                        style.list_ChangeShow : ''
+                    )}
+                >
+                    <label>Old</label>
+                    <input type="password" value={oldP} onChange={(e) => handleTypingOldPassword(e)} /><br/>
+                    <label>New</label>
+                    <input type="password" value={newP} onChange={(e) => handleTypingNewPassword(e)} />
+                    <div 
+                        className={clsx(
+                            style.changeButton, 
+                            newP===""||oldP==="" || newP===oldP ? style.unClick : ""
+                        )} 
+                        onClick={newP===""||oldP==="" || newP===oldP ? ()=>{} : ()=>changePasswordOrId("password")}
                     >Change Password</div>
-                    <div className={clsx(style.changePassButton)} onClick={() => handleChangePass()}>Cancle</div>
+                    <div className={clsx(style.changeButton)} onClick={() => handleChangePass()}>Cancle</div>
                 </form>
                 <div className={clsx(style.list_UserId)} >
-                    <div style={{overflowX: "scroll", padding: "10px 0"}}>Your ID: {data.userId}</div>
+                    <div style={{overflowX: "scroll", padding: "10px 0"}}>{data.userId}</div>
+                    <input 
+                        type="button" 
+                        value="Change Id"
+                        onClick={() => handleChangeId()}
+                        className={clsx(style.list_headerButton)}
+                        style={data.userId === "ADMIN" ? {display: "none"} : {}}
+                    />
                     <input 
                         type="button" 
                         value="Change Password"
@@ -599,8 +670,43 @@ function DataSlide ({show, close=()=>{}}) {
                     >→</div>
                 </div>)}
                 <div className={clsx(style.list_addWord)} onClick={() => handleAddWord()}>+</div>
+                {
+                    data.userId==="ADMIN" ?
+                    "":
+                    <Fragment>
+                    <div 
+                        className={clsx(style.deteleAccount)} 
+                        onClick={() => setDeleteAccount(!deleteAccount)}
+                    >Delete this account</div>
+                    <DeleteAccountSlide userId={data.userId} show={deleteAccount} close={setDeleteAccount} />
+                    </Fragment>
+                }
             </div>
         </div>
+    )
+}
+/////////////////////////////
+function DeleteAccountSlide ({ userId, show, close=()=>{} }) {
+    const dispatch = useDispatch()
+    const DeleAccount = () => {
+        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=kickUser&userId="+userId, {method: "GET"})
+        .then(() => {
+            dispatch(reloadData({}))
+            handleAlert(["success","Deleted user "+userId], dispatch)
+        })
+    }
+    return (
+        <form className={clsx(style.list_ChangeBox, show? style.list_ChangeShow : '')}>
+            <div className={clsx(style.DeleteAccountSlideUserId)} >{userId}</div>
+            <div className={clsx(style.DeleteAccountSlideSure)} >Detele this Account! Are you sure?</div>
+            <input 
+                className={clsx(style.DeleteAccountSlideSubmit)} 
+                value="Yes, I sure" 
+                type="button" 
+                onClick={() => DeleAccount()} 
+            />
+            <div className={clsx(style.DeleteAccountSlideCancle)} onClick={() => close(false)}>Cancle</div>
+        </form>
     )
 }
 

@@ -12,6 +12,8 @@ import Login from './Login';
 import AdminSlide from './control/11_Admin';
 import OtherSlide from './control/12_Other';
 import { getAllUser } from './reduxToolkit/13_AllUser';
+import { useEffect } from 'react';
+import ScoreSlide from './control/14_Score';
 
 function App() {
   const [userDataSlide, setUserDataSlide] = useState(false)
@@ -60,36 +62,56 @@ function App() {
     dispatch(toSetAnswer(userAnswer))
   }
 
+  const [hello, setHello] = useState(true)
+  useEffect(() => {
+    console.log("app rerender")
+    const helloToFalse = setTimeout(() => {
+      setHello(false);
+      return clearTimeout(helloToFalse)
+    }, 3000)
+  },[])
+
   const name = data.userId ? data.userId.split("@")[0] : "No User"
-  if (name === "No User") {
+  if (hello === true) {
+    return (
+      <div className={clsx(style.hello)} >
+        Wellcome to KiisEnlish !
+        <div className={clsx(style.img)} />
+      </div>
+    )
+  } else if (name === "No User") {
     return (<Login />)
   } else {
     return (<Fragment>
       <div className={clsx(style.topControl)}>
         <div>
-        <div className={clsx(style.dataSlide)} onClick={() => handleShowUserDataSlide()} >{name}'s Data</div>
-        <DataSlide show={userDataSlide} close={handleShowUserDataSlide} />
+          <div className={clsx(style.dataSlide)} onClick={() => handleShowUserDataSlide()} >{name}'s Data</div>
+          <DataSlide show={userDataSlide} close={handleShowUserDataSlide} />
         </div>
         {
           name === "ADMIN" ?
+          <Fragment>
+            <div>
+              <div 
+              className={clsx(style.dataSlide)} 
+              onClick={() => handleShow_AdminOther_Slide("avoidAdminPassword")}
+              >Users and Words</div>
+              <AdminSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
+            </div>
+            <ScoreSlide allUser={allUser} />
+          </Fragment> :
           <div>
             <div 
-            className={clsx(style.dataSlide)} 
-            onClick={() => handleShow_AdminOther_Slide("avoidAdminPassword")}
-            >ADMIN's authority</div>
-            <AdminSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
-          </div> :
-          <div>
-          <div 
-            className={clsx(style.dataSlide)} 
-            onClick={() => handleShow_AdminOther_Slide("loadAllWords")}
-          >Everyone's Vocabulary</div>
-          <OtherSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
+              className={clsx(style.dataSlide)} 
+              onClick={() => handleShow_AdminOther_Slide("loadAllWords")}
+            >Everyone's words</div>
+            <OtherSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
           </div>
         }
       </div>
-    <div className={clsx(style.alertSuccessful, alert[0]? style.alertShow: "")} >Request is successful !</div>
-    <div className={clsx(style.alertPasswordMissing, alert[1]? style.alertShow: "")} >Old Password is wrong !</div>
+    <div className={clsx(style.alertSuccess, alert[0].show? style.alertShow: "")} >{alert[0].mess}</div>
+    <div className={clsx(style.alertFail, alert[1].show? style.alertShow: "")} >{alert[1].mess}</div>
+    <div className={clsx(style.alertQuest, alert[2].show? style.alertShow: "")} >{alert[2].mess}</div>
     <div id={clsx(style.app)}>
       <div className={data.words[now].important ? clsx(style.importantWord) : clsx(style.importantSpace)}/>
       <div className={clsx(style.ask)}>{data.words[now].word}</div>

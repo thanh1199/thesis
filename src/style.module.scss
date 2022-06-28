@@ -1,4 +1,33 @@
-.alertSuccessful {
+.hello {
+    margin-top: 10%;
+    margin-bottom: auto;
+    font-size: 30px;
+    width: 100vw;
+    text-align: center;
+    .img {
+        position: relative;
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        background-image: url(./john.png);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 583px;
+        height: 150px;
+        border-radius: 80px;
+    }
+}
+@media (max-width: 600px) {
+    .hello {
+        .img {
+            width: 300px;
+            height: 80px;
+            border-radius: 80px;
+        }
+    }
+}
+.alertSuccess {
     position: fixed;
     z-index: 1000;
     top: 10vh;
@@ -13,7 +42,7 @@
     transform: translateX(250px);
     box-shadow: 0px 0px 3px 2px rgba(166, 255, 209, 0.8), 0px 0px 5px 15px rgba(159, 255, 226, 0.4);
 }
-.alertPasswordMissing {
+.alertFail {
     position: fixed;
     z-index: 1000;
     top: 10vh;
@@ -27,6 +56,21 @@
     opacity: 0;
     transform: translateX(250px);
     box-shadow: 0px 0px 3px 2px rgba(255, 115, 115, 0.8), 0px 0px 5px 15px rgba(255, 159, 159, 0.4);
+}
+.alertQuest {
+    position: fixed;
+    z-index: 1000;
+    top: 10vh;
+    right: 0;
+    background-color: rgba(255, 252, 68, 0.9);
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px;
+    transition: ease 1s;
+    opacity: 0;
+    transform: translateX(250px);
+    box-shadow: 0px 0px 3px 2px rgba(255, 253, 115, 0.8), 0px 0px 5px 15px rgba(255, 247, 159, 0.4);
 }
 .alertShow {
     opacity: 1;
@@ -51,6 +95,197 @@
         background-color: rgb(68, 0, 87);
         color: white;
         transform: translateX(5px);
+    }
+}
+.scoreHidden {
+    right: -100% !important;
+    .scoreSlideBlur {
+        top: -100% !important;
+        left: -100% !important;
+    }
+}
+.scoreSlide {
+    position: fixed;
+    z-index: 100;
+    right: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: ease 1s;
+    .scoreSlideBlur {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(1px);
+        transition: ease 0.5s;
+        padding: 10px calc(70vw + 10px) 10px 10px;
+    }
+    .scoreButton {
+        color: white;
+        border: solid 0.5px rgb(78, 0, 84);
+        position: fixed;
+        z-index: 90;
+        top: 70%;
+        left: 80%;
+        width: fit-content;
+        padding: 40px 30px;
+        background-color: rgb(67, 0, 93);
+        border-radius: 50px;
+        opacity: 0.2;
+        user-select: none;
+        &:hover {
+            opacity: 1;
+            transition: ease 0.1s;
+        }
+    }
+    .scoreBox {
+        position: relative;
+        width: 60vw;
+        margin-left: auto;
+        height: 100vh;
+        background-color: rgb(255, 255, 255);
+        padding: 130px 0;
+        .scoreTopFunc {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(230, 121, 255, 0.3);
+            .scoreSearch {
+                text-align: center;
+                outline: none;
+                border: none;
+                border-bottom: solid 1px black;
+                background-color: unset;
+                padding: 4px 10px;
+                width: 80%;
+                display: block;
+                margin: 20px auto 10px;
+            }
+            .clearSearch {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+                width: fit-content;
+                opacity: 0.3;
+                background-color: rgb(92, 0, 108);
+                color: white;
+                padding: 3px 8px;
+                border-radius: 15px;
+                transition: ease 0.1s;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            .selectAll {
+                padding: 0 30px;
+                width: fit-content;
+                background-color: rgb(95, 0, 142);
+                color: white;
+                margin-right: auto;
+                margin-left: auto;
+                cursor: pointer;
+                border-radius: 15px;
+                transition: ease 0.1s;
+                &:hover {
+                    background-color: rgb(160, 0, 192);
+                }
+            }
+            .multiSelect {
+                padding: 3px 0;
+                width: fit-content;
+                margin: 5px auto;
+                border-radius: 20px;
+                background-color: rgb(95, 0, 142);
+                color: black;
+                span {
+                    display: inline-block;
+                }
+                .changeScoreGoAll {
+                    padding: 0 15px;
+                    margin: 0 25px;
+                    background-color: rgb(236, 204, 255);
+                    color: black;
+                    border-radius: 15px;
+                    transition: ease 0.1s;
+                    &:hover {
+                        background-color: rgb(0, 110, 20);
+                        color: white;
+                    }
+                }
+                .changeScoreAll {
+                    margin: 0 10px;
+                    padding: 0 5px;
+                    background-color: rgb(236, 204, 255);
+                    border-radius: 15px;
+                    transition: ease 0.1s;
+                    &:hover {
+                        background-color: rgb(0, 110, 20);
+                        color: white;
+                    }
+                }
+            }
+        }
+        .scoreLog {
+            transition: ease 0.1s;
+            padding: 30px 10px 10px 10px;
+            font-size: 18px;
+            user-select: none;
+            position: relative;
+            &:nth-child(odd) {
+                background-color: #eee;
+            }
+            &:hover {
+                background-color: #ddd;
+            }
+            .scoreFunc {
+                position: absolute;
+                font-size: 18px;
+                top: 5px;
+                right: 10px;
+            }
+            .changeScore {
+                display: inline-block;
+                padding: 2px;
+                min-width: 25px;
+                margin: 0 5px;
+                text-align: center;
+                color: rgb(0, 127, 76);
+                transition: ease 0.1s;
+                border-radius: 15px;
+                &:hover {
+                    background-color: rgb(0, 127, 76);
+                    color: white;
+                }
+            }
+            .changeScoreGo {
+                display: inline-block;
+                padding: 2px 5px;
+                color: rgb(0, 127, 76);
+                margin: 0 5px;
+                transition: ease 0.1s;
+                border-radius: 15px;
+                &:hover {
+                    background-color: rgb(0, 127, 76);
+                    color: white;
+                }
+            }
+        }
+    }
+    @media (max-width: 600px) {
+        .scoreButton {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            padding: 10px 5px;
+        }
+        .scoreBox {
+            width: 100vw;
+        }
     }
 }
 #app {
@@ -104,6 +339,7 @@
     background-image: linear-gradient(to top,rgb(186, 255, 253), white);
 }
 #control {
+    user-select: none;
     width: 100vw;
     height: 10vh;
 
@@ -213,9 +449,13 @@
             color: brown;
         }
     }
+    .onTop_box_full {
+        height: 90vh !important;
+        border-radius: 20px 0 20px 20px !important;
+    }
     .onTop_box {
         position: relative;
-        padding: 0 20px;
+        padding:  10px 20px 30px 20px;
         margin: 0 5vw;
         width: 90vw;
         height: 65vh;
@@ -312,9 +552,9 @@
                 color: white;
             }
         }
-        .list_ChangePassBox {
+        .list_ChangeBox {
             position: fixed;
-            z-index: 2;
+            z-index: 1000;
             top: 0;
             left: 0;
             height: 100vh;
@@ -341,7 +581,7 @@
                 border-bottom: solid 1px black;
                 width: 200px;
             }
-            .changePassButton {
+            .changeButton {
                 width: fit-content;
                 margin: 20px 0 0 50%;
                 transform: translateX(-50%);
@@ -363,7 +603,7 @@
                 opacity: 0.3;
             }
         }
-        .list_ChangePassShow {
+        .list_ChangeShow {
             transform: translateY(0);
         }
         .list_word {
@@ -450,6 +690,163 @@
                 color: white;
             }
         }
+        .deteleAccount {
+            text-align: center;
+            width: fit-content;
+            margin-top: 20px;
+            margin-left: auto;
+            padding: 10px 20px;
+            color:rgb(198, 0, 0);
+            cursor: pointer;
+        }
+        .DeleteAccountSlideUserId {
+            text-align: center;
+            background-color: black;
+            color: white;
+            padding: 20px;
+        }
+        .DeleteAccountSlideSure {
+            color:rgb(213, 0, 0);
+            padding: 20px 0;
+        }
+        .DeleteAccountSlideSubmit {
+            border: 1px solid rgb(225, 0, 0) !important;
+            padding: 10px 30px;
+            color: rgb(208, 0, 0);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: ease 0.1s;
+            &:hover {
+                color: white;
+                background-color: rgb(225, 0, 0);
+            }
+        }
+        .DeleteAccountSlideCancle {
+            border: 1px solid rgb(0, 161, 81) !important;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            padding: 10px 75px;
+            color: rgb(0, 164, 93);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: ease 0.1s;
+            &:hover {
+                color: white;
+                background-color: rgb(0, 168, 78);
+            }
+        }
+        .adminLog {
+            position: relative;
+            padding: 25px 10px 5px 10px;
+            border-radius: 15px;
+            &:nth-child(odd) {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            span {
+                position: absolute;
+                top: 5px;
+                right: 50px;
+                font-size: 12px;
+                &:nth-child(1) {
+                    right: 80px;
+                }
+                &:nth-child(2) {
+                    right: 30px;
+                }
+            }
+            .log_option {
+                position: absolute;
+                top: 2px;
+                right: 5px;
+                display: inline-block;
+                border-radius: 20px;
+                padding: 0 5px;
+                transition: ease 0.1s;
+                background-color: #eee;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 1;
+                    color: black !important;
+                }
+            }
+            .log_go {
+                right: 10px;
+                color: rgb(0, 141, 19);
+                &:hover {
+                    background-color: rgb(0, 164, 5);
+                }
+            }
+            .log_haven {
+                opacity: 1;
+                top: 10;
+                right: 10px;
+                color: black;
+                cursor: no-drop;
+                background-color: rgb(0, 164, 5);
+            }
+        }
+        .adminLogHover {
+            cursor: pointer;
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.2) !important;
+            }
+        }
+        .controlContainer {
+            display: flex;
+            flex-direction: row;
+            padding: 10px 0;
+            .control {
+                padding: 5px;
+                margin: 0 5px;
+                border: solid 0.5px rgb(0, 0, 0);
+                width: fit-content;
+                border-radius: 20px;
+                transition: ease 0.2s;
+                background-color: rgb(255, 255, 255);
+                &:hover {
+                    background-color: rgb(68, 0, 102);
+                    color: white;
+                }
+            }
+        }
+        .kickOut {
+            width: fit-content;
+            margin: 10px 0;
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: solid 1px rgb(153, 0, 0);
+            background-color: rgb(255, 185, 185);
+            transition: 0.05s ease;
+            &:hover {
+                color: white;
+                background-color: rgb(130, 0, 0);
+            }
+        }
+        .showPassword {
+            text-align: center;
+            margin-bottom: 20px;
+            transition: ease 0.05s;
+            &:hover {
+                color: rgb(107, 0, 189);
+            }
+            span {
+                position: relative;
+                .mask {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    background-color: white;
+                    transition: ease 0.05s;
+                    cursor: pointer;
+                }
+                .unMask {
+                    opacity: 0;
+                }
+            }
+        }
     }
     .onTop_func {
         position: relative;
@@ -485,6 +882,7 @@
         }
     }
     .inputSubmit {
+        min-width: 150px;
         display: block;
         color: rgb(0, 94, 12);
         background-color: rgb(219, 255, 211);
@@ -505,148 +903,6 @@
         opacity: 0.7;
         cursor: no-drop;
     }
-}
-.adminSlide {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    transition: ease 0.3s;
-    .adminSlideBlur {
-        position: absolute;
-        z-index: 0;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(1px);
-    }
-    .adminBox {
-        position: relative;
-        z-index: 10;
-        color: black !important;
-        margin: 1vh 2vw;
-        background-image: linear-gradient(to top left, rgb(200, 255, 252), rgb(255, 225, 255));
-        width: 96vw;
-        height: 98vh;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        border-radius: 30px;
-        padding: 60px 30px 10px 30px;
-        transition: ease 0.3s;
-    }
-    .control {
-        position: absolute;
-        top: 20px;
-        padding: 5px;
-        border: solid 1px white;
-        width: fit-content;
-        border-radius: 20px;
-        transition: ease 0.2s;
-        background-color: rgba(255, 255, 255, 0.3);
-        &:hover {
-            background-color: white;
-        }
-    }
-    .close {
-        right: 40px;
-    }
-    .showAllWords {
-        right: 100px;
-    }
-    .adminLog {
-        position: relative;
-        padding: 25px 5px 5px 5px;
-        border-radius: 15px;
-        &:nth-child(odd) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-        span {
-            position: absolute;
-            top: 5px;
-            right: 50px;
-            font-size: 12px;
-        }
-        .log_option {
-            position: absolute;
-            top: 2px;
-            right: 5px;
-            display: inline-block;
-            border-radius: 20px;
-            padding: 0 5px;
-            transition: ease 0.1s;
-            background-color: #eee;
-            opacity: 0.5;
-            &:hover {
-                opacity: 1;
-                color: black !important;
-            }
-        }
-        .log_go {
-            right: 10px;
-            color: rgb(0, 141, 19);
-            &:hover {
-                background-color: rgb(0, 164, 5);
-            }
-        }
-        .log_haven {
-            opacity: 1;
-            top: 10;
-            right: 10px;
-            color: black;
-            cursor: no-drop;
-            background-color: rgb(0, 164, 5);
-        }
-    }
-    .adminLogHover {
-        cursor: pointer;
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.2) !important;
-        }
-    }
-    .adminSubBox {
-        position: fixed;
-        z-index: 30;
-        top: 1vh;
-        left: 2vw;
-        width: 96vw;
-        height: 98vh;
-        overflow-y: scroll;
-        background-color: white;
-        padding: 60px 30px 10px 30px;
-        border-radius: 20px;
-        transition: ease 0.3s;
-        .closeBox {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            border: solid 1px rgb(87, 0, 117);
-            &:hover {
-                color: white;
-                background-color: rgb(81, 0, 115);
-            }
-        }
-        .kickOut {
-            position: absolute;
-            top: 20px;
-            right: unset;
-            left: 20px;
-            border: solid 1px rgb(153, 0, 0);
-            background-color: rgb(255, 185, 185);
-            &:hover {
-                color: white;
-                background-color: rgb(130, 0, 0);
-            }
-        }
-    }
-    .adminSubBoxHidden {
-        top: -110vh !important;
-    }
-}
-.adminSlideHidden {
-    top: -110vh !important;
 }
 .login {
     width: 100vw;

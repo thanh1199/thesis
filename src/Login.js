@@ -10,14 +10,16 @@ import { toAlert } from "./reduxToolkit/11_Alert";
 
 
 function Login () {
+    const [isLogined, setIsLogined] = useState(false)
+    
     const dispatch = useDispatch()
     const alert = useSelector(state => state.alert)
-    const handleAlert = (mess) => {
-        dispatch(toAlert(mess))
+    const handleAlert = ([type, mess]) => {
+        dispatch(toAlert([type, mess]))
         const showAlert = setTimeout(() => {
-            dispatch(toAlert(mess))
+            dispatch(toAlert([type, mess]))
             return clearTimeout(showAlert)
-        }, 2000)
+        }, 3000)
     }
     const allUser = useSelector(state => state.allUser)
     useEffect(() => {
@@ -31,53 +33,46 @@ function Login () {
 
     const [loginId, setLoginId] = useState(localStorage.getItem("userId") ? localStorage.getItem("userId") : "")
     const [loginPassword, setLoginPassword] = useState("")
-    const typingLoginId = (e, from="id") => {
-        if (from==="id") {
-            setLoginId(e.target.value)
-            localStorage.setItem("userId", e.target.value)
-            if (e.target.value==="" || loginPassword==="") {
+    useEffect(() => {
+        if (loginId==="" || loginPassword==="") {
+            setIsLogin(false)
+            setIsSignup(false)
+        } else {
+            if (allUser.find((user) => user.userId===loginId) === undefined) {
                 setIsLogin(false)
-                setIsSignup(false)
+                setIsSignup(true)
             } else {
-                if (allUser.find((user) => user.userId===e.target.value) === undefined) {
-                    setIsLogin(false)
-                    setIsSignup(true)
-                } else {
-                    setIsLogin(true)
-                    setIsSignup(false)
-                }
+                setIsLogin(true)
+                setIsSignup(false)
             }
         }
-        if (from==="password") {
-            if (loginId==="" || e.target.value==="") {
-                setIsLogin(false)
-                setIsSignup(false)
-            } else {
-                if (allUser.find((user) => user.userId===loginId) === undefined) {
-                    setIsLogin(false)
-                    setIsSignup(true)
-                } else {
-                    setIsLogin(true)
-                    setIsSignup(false)
-                }
-            }
+    }, [allUser, loginId, loginPassword])
+    const typingLoginId = (newValue) => {
+        if (newValue.includes(",")) {
+            handleAlert(["fail","Not use comma /,/ in ID"])
+        } else {
+            setLoginId(newValue)
+            localStorage.setItem("userId", newValue)
         }
     }
-    const typingLoginPassword = (e) => {
-        setLoginPassword(e.target.value)
-        typingLoginId(e, "password")
+    const typingLoginPassword = (newValue) => {
+        setLoginPassword(newValue)
     }
     const handleLogin = () => {
         const yes = allUser.find((user) => user.userId === loginId && user.password === loginPassword)
         if (yes !== undefined) {
             fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET' })
             .then((response) => response.json())
-            .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+loginId)})
+            .then((obj) => {
+                obj.words.sort(() => 0.5 - Math.random())
+                dispatch(reloadData(obj))
+                console.log("loaded all of data for "+loginId)
+            })
             .catch(error => console.log(error))
-            
-            handleAlert("successful")
+            setIsLogined(true)
+            handleAlert(["success","Logined successfully"])
         } else {
-            handleAlert("passwordMissing")
+            handleAlert(["fail","Password is wrong"])
         }
         setLoginPassword("")
         setIsLogin(false)
@@ -101,30 +96,36 @@ function Login () {
         setLoginPassword("")
         setIsLogin(false)
         setIsSignup(false)
-        handleAlert("successful")
+        handleAlert(["success","Signed up successfully\nPlease login again"])
     }
-
-    return (<div className={clsx(style.login)}>
-        <div className={clsx(style.alertSuccessful, alert[0]? style.alertShow: "")} >Sign up successful !</div>
-        <div className={clsx(style.alertPasswordMissing, alert[1]? style.alertShow: "")} >Password is wrong !</div>
-        <label>Your ID:</label>
-        <input value={loginId} onChange={(e) => typingLoginId(e)} />
-        <label>Password:</label>
-        <input type="password" value={loginPassword} onChange={(e) => typingLoginPassword(e)} />
-        <input 
-            type="button" 
-            value="Login" 
-            className={clsx(isLogin? style.button: style.buttonBlock)} 
-            onClick={isLogin? () => handleLogin() : () => {}} 
-        />
-        <input 
-            type="button" 
-            value="Sign up" 
-            className={clsx(isSignup? style.button: style.buttonBlock)} 
-            onClick={isSignup? () => handleSignup() : () => {}} 
-        />
-        <div className={clsx(style.forgotPassword)}>Forgot Password ?</div>
-    </div>)
+    if (isLogined) {
+        return (<div className={clsx(style.login)} style={{textAlign: "center"}}>
+            WAITING FOR LOADING DATA...
+            <div className={clsx(style.alertSuccess, alert[0].show? style.alertShow: "")} >{alert[0].mess}</div>
+        </div>)
+    } else {
+        return (<div className={clsx(style.login)}>
+            <div className={clsx(style.alertSuccess, alert[0].show? style.alertShow: "")} >{alert[0].mess}</div>
+            <div className={clsx(style.alertFail, alert[1].show? style.alertShow: "")} >{alert[1].mess}</div>
+            <label>Your ID:</label>
+            <input type="text" value={loginId} onChange={(e) => typingLoginId(e.target.value)} />
+            <label>Password:</label>
+            <input type="password" value={loginPassword} onChange={(e) => typingLoginPassword(e.target.value)} />
+            <input 
+                type="button" 
+                value={allUser.length === 0? "loading" : "Login"}
+                className={clsx(isLogin && allUser.length !== 0 ? style.button: style.buttonBlock)} 
+                onClick={isLogin && allUser.length !== 0 ? () => handleLogin() : () => {}} 
+            />
+            <input 
+                type="button" 
+                value={allUser.length === 0? "loading" : "Sign up"} 
+                className={clsx(isSignup && allUser.length !== 0 ? style.button: style.buttonBlock)} 
+                onClick={isSignup && allUser.length !== 0 ? () => handleSignup() : () => {}} 
+            />
+            <div className={clsx(style.forgotPassword)}>Forgot Password ?</div>
+        </div>)
+    }
 }
 
 export default Login
