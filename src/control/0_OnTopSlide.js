@@ -307,8 +307,9 @@ function EditAddSlide ({name="", close = () => {}}) {
                 </div>
             </div>
         )
-    } else if (name === "Add") {
+    } else if (name === "Add" || name === "Add Word To Everyone") {
         const urlAddWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWord&userId="+data.userId
+        const urlAddWordToEveryOne = "https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWordToEveryOne&userId="+data.userId
         var contentAdd = new FormData()
         contentAdd.append('word', word)
         contentAdd.append('mean', mean)
@@ -316,7 +317,7 @@ function EditAddSlide ({name="", close = () => {}}) {
         contentAdd.append('example', example)
 
         const handleAdd = () => {
-            fetch(urlAddWord, {
+            fetch(name === "Add" ? urlAddWord : urlAddWordToEveryOne, {
                 method: 'POST',
                 body: contentAdd
             })
@@ -337,7 +338,7 @@ function EditAddSlide ({name="", close = () => {}}) {
                 <div className={clsx(style.onTop_box)} style={{height: "80vh", borderRadius: "20px 0 20px 20px"}}>
                     <form action="" className={clsx(style.form)}>
                         <input 
-                            defaultValue={"NEW WORD"}
+                            defaultValue={name === "Add" ? "NEW WORD" : "NEW WORD TO EVERYONE"}
                             style={{pointerEvents: "none", backgroundColor: "#eee", textAlign: "center"}}
                         />
                         <label>Word</label>
@@ -391,6 +392,7 @@ function EditAddSlide ({name="", close = () => {}}) {
 
 function ClearSlide ({ close=() => {} }) {
     const dispatch = useDispatch()
+    const [canClear, setCanClear] = useState(true)
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const urlDeleteWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=clearWord&userId="+data.userId+"&wordId="+data.words[now].wordId
@@ -401,6 +403,7 @@ function ClearSlide ({ close=() => {} }) {
         .catch(error => console.log(error))
     }
     const handleClear = () => {
+        setCanClear(false)
         fetch(urlDeleteWord, {
             method: 'POST',
         })
@@ -415,7 +418,7 @@ function ClearSlide ({ close=() => {} }) {
     return (
         <div className={clsx(style.onTop)} style={{zIndex: "10"}}>
             <div className={clsx(style.onTop_blur)}></div>
-            <div className={clsx(style.onTop_close)} onClick={() => close()} >Close Clear </div>
+            <div className={clsx(style.onTop_close)} onClick={canClear ? () => close() : () => {}} >Close Clear </div>
             <div className={clsx(style.onTop_box)} style={{height: "80vh", borderRadius: "20px 0 20px 20px"}}>
                 <form action="" className={clsx(style.form)}>
                     <input 
@@ -453,7 +456,7 @@ function ClearSlide ({ close=() => {} }) {
                     <input 
                         type="button" 
                         value="Clear this word"
-                        className={clsx(style.inputSubmit)}
+                        className={clsx(style.inputSubmit, canClear? "" : style.block)}
                         style={{
                             position: "fixed", 
                             bottom: "8vh", 
@@ -461,7 +464,7 @@ function ClearSlide ({ close=() => {} }) {
                             transform: "translateX(-50%)", 
                             zIndex: "1"
                         }}
-                        onClick={() => handleClear()}
+                        onClick={canClear ? () => handleClear() : () => {}}
                     />
                 </form>
             </div>
@@ -678,7 +681,12 @@ function DataSlide ({show, close=()=>{}}) {
                         className={clsx(style.deteleAccount)} 
                         onClick={() => setDeleteAccount(!deleteAccount)}
                     >Delete this account</div>
-                    <DeleteAccountSlide userId={data.userId} show={deleteAccount} close={setDeleteAccount} />
+                    <DeleteAccountSlide 
+                        userId={data.userId} 
+                        show={deleteAccount} 
+                        close={setDeleteAccount}
+                        logout={handleLogout}
+                    />
                     </Fragment>
                 }
             </div>
@@ -686,9 +694,10 @@ function DataSlide ({show, close=()=>{}}) {
     )
 }
 /////////////////////////////
-function DeleteAccountSlide ({ userId, show, close=()=>{} }) {
+function DeleteAccountSlide ({ userId, show, close=()=>{}, logout=()=>{} }) {
     const dispatch = useDispatch()
     const DeleAccount = () => {
+        logout()
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=kickUser&userId="+userId, {method: "GET"})
         .then(() => {
             dispatch(reloadData({}))

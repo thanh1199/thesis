@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     cursor: default;
+    user-select: none;
 }
 input, textarea {
     font-family: 'Zen Kurenaido', sans-serif;
@@ -64,7 +65,7 @@ body {
     height: 90vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 #moreInfo_ {
     position: fixed;

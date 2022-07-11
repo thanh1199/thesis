@@ -10,7 +10,8 @@ import addReducer from "./9_AddSlice";
 import clearReducer from "./10_ClearSlice"
 import alertReducer from "./11_Alert";
 import otherReducer from "./12_Other";
-import allUserReducer from "./13_AllUser"
+import allUserReducer from "./13_AllUser";
+import questionReducer from "./14_Question"
 
 const rootReducer = {
     data: newData,
@@ -23,7 +24,8 @@ const rootReducer = {
     clear: clearReducer,
     alert: alertReducer,
     other: otherReducer,
-    allUser: allUserReducer
+    allUser: allUserReducer,
+    question: questionReducer
 }
 
 const store = configureStore({

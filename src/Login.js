@@ -61,10 +61,11 @@ function Login () {
     const handleLogin = () => {
         const yes = allUser.find((user) => user.userId === loginId && user.password === loginPassword)
         if (yes !== undefined) {
+            setIsLogined(true)
             fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET' })
             .then((response) => response.json())
             .then((obj) => {
-                obj.words.sort(() => 0.5 - Math.random())
+                // obj.words.sort(() => 0.5 - Math.random())
                 dispatch(reloadData(obj))
                 console.log("loaded all of data for "+loginId)
             })
@@ -79,24 +80,35 @@ function Login () {
         setIsSignup(false)
     }
     const handleSignup = () => {
-        const dataSignup = new FormData()
-        dataSignup.append("userId", loginId)
-        dataSignup.append("password", loginPassword)
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=newUser", {
-            method: "POST",
-            body: dataSignup
-        })
-        .then(() => {
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
-            .then((response) => response.json())
-            .then((obj) => {dispatch(getAllUser(obj)); console.log("loaded all of new users")})
-            .catch(error => console.log(error))
-            console.log("confirm sign up")
-        })
-        setLoginPassword("")
-        setIsLogin(false)
-        setIsSignup(false)
-        handleAlert(["success","Signed up successfully\nPlease login again"])
+        if (loginId === "admin" || loginId === "ADMIN") {
+            setLoginId("")
+            handleAlert(["fail","「admin」can not be used for new user"])
+        } else {
+            const dataSignup = new FormData()
+            dataSignup.append("userId", loginId)
+            dataSignup.append("password", loginPassword)
+            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=newUser", {
+                method: "POST",
+                body: dataSignup
+            })
+            .then(() => {
+                setIsLogined(true)
+                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
+                .then((response) => response.json())
+                .then((obj) => {
+                    dispatch(getAllUser(obj))
+                    console.log("loaded all of new users")})
+                .then(() => {
+                    handleAlert(["success","Signed up successfully\nPlease login again"])
+                    setIsLogined(false)
+                    console.log("confirm sign up")
+                })
+                .catch(error => console.log(error))
+            })
+            setLoginPassword("")
+            setIsLogin(false)
+            setIsSignup(false)
+        }
     }
     if (isLogined) {
         return (<div className={clsx(style.login)} style={{textAlign: "center"}}>

@@ -17,6 +17,8 @@ function ScoreSlide ({ allUser }) {
     }
     const [search, setSearch] = useState("")
     const [show, setShow] = useState(false)
+    const [showHistory, setShowHistory] = useState(false)
+    const [history, setHistory] = useState([])
     const allUserWithSeMiPls = allUser.map((user) => {
         var userWithSeMiPls = {...user, select: false, minus: 0, plus: 0}
         return userWithSeMiPls
@@ -25,6 +27,7 @@ function ScoreSlide ({ allUser }) {
 
     const handleShow = () => {
         setShow(!show)
+
     }
     
     let x, y
@@ -87,6 +90,18 @@ function ScoreSlide ({ allUser }) {
             })
         }
         setAllRows(newAllRows)
+    }
+    const handleSeeLog = () => {
+        setShowHistory(!showHistory)
+        if (!showHistory) {
+            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=seeLog" , { method: 'GET' })
+            .then((response) => response.json())
+            .then((obj) => {
+                const historyLog_ = obj.filter((log) => log.fromtable === "userkiis_score")
+                const historyLog = historyLog_.sort((a, b) => b.incre - a.incre)
+                setHistory(historyLog)
+            })
+        }
     }
     const handleReset = (i) => {
         var newAllRows = [...allRows]
@@ -165,7 +180,8 @@ function ScoreSlide ({ allUser }) {
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
         .then((response) => response.json())
         .then((obj) => {
-            dispatch(getAllUser(obj)); 
+            var allUserAvoidAdmin = obj.filter((user) => user.userId !== "ADMIN")
+            dispatch(getAllUser(allUserAvoidAdmin)); 
             console.log("reloaded all of users")
             return obj
         })
@@ -237,7 +253,7 @@ function ScoreSlide ({ allUser }) {
     }
     return(
         <div className={clsx(style.scoreSlide, show? "" : style.scoreHidden)}>
-            <div className={clsx(style.scoreSlideBlur)}></div>
+            <div className={clsx(style.scoreSlideBlur)} />
             <div
                 className={clsx(style.scoreButton)}
                 onMouseDown = {handlePick}
@@ -245,6 +261,13 @@ function ScoreSlide ({ allUser }) {
                 onDoubleClick={() => handleShow()}
                 onTouchStart={() => handleShow()}
             >SCORE</div>
+            <div 
+                className={style.history}
+                style={{display: showHistory ? "block": "none"}}
+            >{history.map((h, i) => <div key={i} className={style.log} >
+                <p>{h.id}</p>
+                {h.content.split("*").map((l, ii) => <span key={ii}>{l}*</span>)}
+            </div>)}</div>
             <div className={clsx(style.scoreBox)}>
                 <div className={style.scoreTopFunc}>
                     <input 
@@ -254,7 +277,10 @@ function ScoreSlide ({ allUser }) {
                         placeholder="Search User ID"
                     />
                     <div className={style.clearSearch} onClick={() => setSearch("")}>×</div>
-                    <div className={style.selectAll} onClick={() => handleSelectAll()}>Select all under rows</div>
+                    <div className={style.seeLog_selectAll}>
+                        <div className={style.seeLog} onClick={() => handleSeeLog()}>History</div>
+                        <div className={style.selectAll} onClick={() => handleSelectAll()}>Select all under rows</div>
+                    </div>
                     <div className={style.multiSelect}>
                         <span className={style.changeScoreGoAll} onClick={() => handleReset(-1)}>Reset</span>
                         <span className={style.changeScoreAll} onClick={() => handleMinus(-1)}>ー</span>

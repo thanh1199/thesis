@@ -14,10 +14,13 @@ import OtherSlide from './control/12_Other';
 import { getAllUser } from './reduxToolkit/13_AllUser';
 import { useEffect } from 'react';
 import ScoreSlide from './control/14_Score';
+import Questions from './control/13_Questions';
 
 function App() {
   const [userDataSlide, setUserDataSlide] = useState(false)
   const [adminOther_Slide, set_AdminOther_Slide] = useState(false)
+  const [questionsSlide, setQuestionsSlide] = useState(false)
+  
   const handleShowUserDataSlide = () => {
     setUserDataSlide(!userDataSlide)
   }
@@ -53,6 +56,10 @@ function App() {
       .catch(error => console.log(error))
     }
   }
+  const handleShowQuestionsSlide = () => {
+    setQuestionsSlide(!questionsSlide)
+  }
+
   const alert = useSelector(state => state.alert)
   const data = useSelector(state => state.data)
   const now = useSelector(state => state.move)
@@ -68,15 +75,16 @@ function App() {
     const helloToFalse = setTimeout(() => {
       setHello(false);
       return clearTimeout(helloToFalse)
-    }, 3000)
+    }, 5000)
   },[])
 
   const name = data.userId ? data.userId.split("@")[0] : "No User"
   if (hello === true) {
     return (
       <div className={clsx(style.hello)} >
+        <img src={require('./KEicon.png')} className={style.imgKe} alt="KiisEnglish" />
         Wellcome to KiisEnlish !
-        <div className={clsx(style.img)} />
+        <img src={require('./joen.png')} className={style.imgJoen} alt="Joen" />
       </div>
     )
   } else if (name === "No User") {
@@ -93,8 +101,8 @@ function App() {
           <Fragment>
             <div>
               <div 
-              className={clsx(style.dataSlide)} 
-              onClick={() => handleShow_AdminOther_Slide("avoidAdminPassword")}
+                className={clsx(style.dataSlide)} 
+                onClick={() => handleShow_AdminOther_Slide("avoidAdminPassword")}
               >Users and Words</div>
               <AdminSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
             </div>
@@ -108,6 +116,13 @@ function App() {
             <OtherSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
           </div>
         }
+        <div>
+          <div 
+            className={style.dataSlide}
+            onClick={() => handleShowQuestionsSlide()}
+          >Questions</div>
+          <Questions show={questionsSlide} user={data.userId==="ADMIN" ? "admin" : "user"} close={handleShowQuestionsSlide} />
+        </div>
       </div>
     <div className={clsx(style.alertSuccess, alert[0].show? style.alertShow: "")} >{alert[0].mess}</div>
     <div className={clsx(style.alertFail, alert[1].show? style.alertShow: "")} >{alert[1].mess}</div>

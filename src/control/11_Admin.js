@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { getAllUser } from "../reduxToolkit/13_AllUser"
 import { toAlert } from "../reduxToolkit/11_Alert"
 import { reloadData } from "../reduxToolkit/0_data"
+import { EditAddSlide } from "./0_OnTopSlide"
 
 
 function AdminSlide ({show, close=()=>{}}) {
@@ -24,7 +25,9 @@ function AdminSlide ({show, close=()=>{}}) {
     const allUser_ = useSelector(state => state.allUser)
     const allUser = allUser_.length===0? [{userId: "No User", password: "・・・"}]: [...allUser_]
     const [showAllWords, setShowAllWords] = useState(false)
-    const [showUserWords, setShowUserWords] = useState([false,0])
+    const [showGiveWord, setShowGiveWord] = useState(false)
+    const [showUserWords, setShowUserWords] = useState([false, 0])
+
     const handleShowAllWords = (type="open") => {
         setShowAllWords(!showAllWords)
         if (type === "open") {
@@ -33,6 +36,9 @@ function AdminSlide ({show, close=()=>{}}) {
             .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
             .catch(error => console.log(error))
         }
+    }
+    const handleShowGiveWord = () => {
+        setShowGiveWord(!showGiveWord)
     }
     const handleShowUserWords = (type="open", userId=0) => {
         setShowUserWords([!showUserWords[0], userId])
@@ -52,9 +58,10 @@ function AdminSlide ({show, close=()=>{}}) {
             .then((obj) => obj.filter((user) => user.userId!=="ADMIN"))
             .then((allUserAvoidAdmin) => {
                 dispatch(getAllUser(allUserAvoidAdmin)) 
-                console.log("Deleted user and loaded new all of users")})
-                handleAlert("success", "Deleted user "+allUser[showUserWords[1]].userId)
-            .catch(error => console.log(error))
+                console.log("Deleted user and loaded new all of users")
+                handleAlert(["success", "Deleted user "+allUser[showUserWords[1]].userId])
+            })
+            .catch((error) => console.log(error))
         })
     }
     const loadUserData = () => {
@@ -86,7 +93,7 @@ function AdminSlide ({show, close=()=>{}}) {
                 body: contentAdd
             })
             .then(() => {
-                handleAlert("success", "Added successfully")
+                handleAlert(["success", "Added successfully"])
                 loadUserData()
                 console.log("added new word")
             })
@@ -105,7 +112,7 @@ function AdminSlide ({show, close=()=>{}}) {
         <div className={clsx(style.onTop_box, style.onTop_box_full)}>
             <div className={clsx(style.controlContainer)}>
                 <div className={clsx(style.control)} onClick={() => handleShowAllWords()}>Everyone's words</div>
-                <div className={clsx(style.control)} onClick={() => {}}>Give word</div>
+                <div className={clsx(style.control)} onClick={() => handleShowGiveWord()}>Give word</div>
             </div>
             {allUser.map((user, i) => <div 
                 key={i} 
@@ -130,13 +137,18 @@ function AdminSlide ({show, close=()=>{}}) {
                             <span>{word.wordId}, {word.userId}</span>
                             <div 
                                 className={clsx(style.log_option, haveYet === undefined ? style.log_go : style.log_haven)}
-                                onClick={haveYet === undefined ? () => handleAdd(i, "userWords") : () => {}}
+                                onClick={haveYet === undefined ? () => handleAdd(i, "allWords") : () => {}}
                             >{haveYet === undefined ? "+" : "✔️"}</div>
                         </div>)
                         
                     })
                 }</div>
             </div>
+
+            <div style={{display: showGiveWord? "block" : "none"}}>
+                <EditAddSlide name="Add Word To Everyone" close={() => handleShowGiveWord()} />
+            </div>
+
             <div className={clsx(style.onTop, showUserWords[0]? "":style.onTopHidden)}>
                 <div className={clsx(style.onTop_blur)} />
                 <div 
