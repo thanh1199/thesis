@@ -1,3 +1,4 @@
+
 .hello {
     margin-bottom: auto;
     font-size: 30px;
@@ -1034,6 +1035,10 @@
            padding: 20px 0;
            position: relative;
            text-align: center;
+           user-select: text;
+           * {
+            user-select: text;
+           }
            &::after {
                content: "Content";
                color: rgb(0, 0, 0);
@@ -1133,6 +1138,10 @@
             display: flex;
             flex-direction: column;
             padding-bottom: 150px;
+            user-select: text;
+            * {
+                user-select: text;
+            }
             .unitQuestion {
                 padding: 15px 10px 5px;
                 margin: 20px 0 0 0;
@@ -1232,6 +1241,10 @@
             .unitAnswerContainer {
                 border-left: 2px #e28bff solid;
                 padding: 30px 0 10px 20px;
+                user-select: text;
+                * {
+                    user-select: text;
+                }
                 .unitAnswer {
                     padding: 5px;
                     margin-bottom: 30px;

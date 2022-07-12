@@ -115,6 +115,10 @@ body {
     background-color: white;
     border-radius: 20px 0 20px 20px;
     line-height: 28px;
+    user-select: text;
+}
+.box * {
+    user-select: text;
 }
 
 @media (max-width: 600px) {

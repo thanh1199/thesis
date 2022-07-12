@@ -135,7 +135,7 @@ function Login () {
                 className={clsx(isSignup && allUser.length !== 0 ? style.button: style.buttonBlock)} 
                 onClick={isSignup && allUser.length !== 0 ? () => handleSignup() : () => {}} 
             />
-            <div className={clsx(style.forgotPassword)}>Forgot Password ?</div>
+            <div className={clsx(style.forgotPassword)}>If forgot your password, just quest ADMIN !</div>
         </div>)
     }
 }
