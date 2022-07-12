@@ -13,7 +13,7 @@ import AdminSlide from './control/11_Admin';
 import OtherSlide from './control/12_Other';
 import { getAllUser } from './reduxToolkit/13_AllUser';
 import { useEffect } from 'react';
-import ScoreSlide from './control/14_Score';
+import ScoreSlide, { ScoreSlideOnlyRead } from './control/14_Score';
 import Questions from './control/13_Questions';
 
 function App() {
@@ -106,15 +106,18 @@ function App() {
               >Users and Words</div>
               <AdminSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
             </div>
-            <ScoreSlide allUser={allUser} />
+            <ScoreSlide />
           </Fragment> :
-          <div>
-            <div 
-              className={clsx(style.dataSlide)} 
-              onClick={() => handleShow_AdminOther_Slide("loadAllWords")}
-            >Everyone's words</div>
-            <OtherSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
-          </div>
+          <Fragment>
+            <div>
+              <div 
+                className={clsx(style.dataSlide)} 
+                onClick={() => handleShow_AdminOther_Slide("loadAllWords")}
+              >Everyone's words</div>
+              <OtherSlide show={adminOther_Slide} close={handleShow_AdminOther_Slide} />
+            </div>
+            <ScoreSlideOnlyRead />
+          </Fragment>
         }
         <div>
           <div 

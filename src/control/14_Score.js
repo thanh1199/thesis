@@ -1,19 +1,21 @@
 import clsx from "clsx"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { reloadData } from "../reduxToolkit/0_data"
 import { toAlert } from "../reduxToolkit/11_Alert"
 import { getAllUser } from "../reduxToolkit/13_AllUser"
 import style from "../style.module.scss"
 
 
-function ScoreSlide ({ allUser }) {
+function ScoreSlide () {
     const dispatch = useDispatch()
+    const allUser = useSelector(state => state.allUser)
     const handleAlert = ([type, mess]) => {
         dispatch(toAlert([type, mess]))
         const showAlert = setTimeout(() => {
             dispatch(toAlert([type, mess]))
             return clearTimeout(showAlert)
-        }, 5000)
+        }, 3000)
     }
     const [search, setSearch] = useState("")
     const [show, setShow] = useState(false)
@@ -25,11 +27,6 @@ function ScoreSlide ({ allUser }) {
     })
     const [allRows, setAllRows] = useState(allUserWithSeMiPls)
 
-    const handleShow = () => {
-        setShow(!show)
-
-    }
-    
     let x, y
     const move = (event) => {
         // event.target.style.left = `${event.pageX - 50}px`
@@ -251,15 +248,15 @@ function ScoreSlide ({ allUser }) {
             }
         }
     }
-    return(
+    return (
         <div className={clsx(style.scoreSlide, show? "" : style.scoreHidden)}>
             <div className={clsx(style.scoreSlideBlur)} />
             <div
                 className={clsx(style.scoreButton)}
                 onMouseDown = {handlePick}
                 onMouseUp = {handlePut}
-                onDoubleClick={() => handleShow()}
-                onTouchStart={() => handleShow()}
+                onDoubleClick={() => setShow(!show)}
+                onTouchStart={() => setShow(!show)}
             >SCORE</div>
             <div 
                 className={style.history}
@@ -310,4 +307,57 @@ function ScoreSlide ({ allUser }) {
     )
 }
 
+function ScoreSlideOnlyRead () {
+    const dispatch = useDispatch()
+    const data = useSelector(state => state.data)
+    const handleReloadScore = () => {
+        document.getElementById("score").classList.contains(style.loadingScoreAnimation) ?
+        document.getElementById("score").classList.remove(style.loadingScoreAnimation) :
+        document.getElementById("score").classList.add(style.loadingScoreAnimation) ;
+
+        const url = "https://webpg2-1.herokuapp.com/z2214505.php?step=1&password="+data.password+"&userId="+data.userId
+        fetch ( url, { method: "GET" })
+        .then((response) => response.json())
+        .then((obj) => {
+            console.log("Loaded new data, new score")
+            const reload = setTimeout(() => {
+                dispatch(reloadData(obj))
+                if (document.getElementById("score")) {
+                    document.getElementById("score").classList.remove(style.loadingScoreAnimation)
+                }
+                return clearTimeout(reload)
+            }, 1000)
+        })
+        .catch(error => console.log(error))
+    }
+    let x, y
+    const move = (event) => {
+        event.target.style.left = `${event.pageX - x}px`
+        event.target.style.top = `${event.pageY - y}px`
+    }
+    const handlePick = (event) => {
+        x = (event.target.getBoundingClientRect().right - event.target.getBoundingClientRect().left)/2
+        y = (event.target.getBoundingClientRect().bottom - event.target.getBoundingClientRect().top)/2
+
+        event.target.addEventListener("mousemove", move)
+    }
+    const handlePut = (event) => {
+        event.target.removeEventListener("mousemove", move)
+    }
+
+    return (
+        <div className={style.scoreSlide} style={{right: "-100%"}}>
+            <div
+                id="score"
+                className={style.scoreButton}
+                onMouseDown = {handlePick}
+                onMouseUp = {handlePut}
+                onDoubleClick={() => handleReloadScore()}
+                onTouchStart={() => handleReloadScore()}
+            >{data.userId} ({data.score})</div>
+        </div>
+    )
+}
+
+export { ScoreSlideOnlyRead }
 export default ScoreSlide

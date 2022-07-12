@@ -146,6 +146,33 @@
             transition: ease 0.1s;
         }
     }
+    .loadingScoreAnimation {
+        transform: translate(0px,0px) scale(1);
+        animation: loadingScore 1s linear;
+        @keyframes loadingScore {
+            0% {transform: translate(10px,0px) scale(1);}
+            5% {transform: translate(0px,0px) scale(1);}
+            10% {transform: translate(-10px,0px) scale(1);}
+            15% {transform: translate(0px,0px) scale(1);}
+            20% {transform: translate(0px,10px) scale(1);}
+            25% {transform: translate(0px,0px) scale(1);}
+            30% {transform: translate(0px,-10px) scale(1);}
+            35% {transform: translate(0px,0px) scale(1);}
+            40% {transform: translate(10px,10px) scale(1);}
+            45% {transform: translate(0px,0px) scale(1);}
+            50% {transform: translate(-10px,-10px) scale(1);}
+            55% {transform: translate(0px,0px) scale(1);}
+            60% {transform: translate(-10px,10px) scale(1);}
+            65% {transform: translate(0px,0px) scale(1);}
+            70% {transform: translate(10px,-10px) scale(1);}
+            75% {transform: translate(0px,0px) scale(1);}
+            80% {transform: translate(0px,0px) scale(2);}
+            85% {transform: translate(0px,0px) scale(0.5);}
+            90% {transform: translate(0px,0px) scale(2);}
+            95% {transform: translate(0px,0px) scale(0.2);}
+            100% {transform: translate(0px,0px) scale(1);}
+        }
+    }
     .history {
         position: absolute;
         overflow-y: scroll;
@@ -316,8 +343,8 @@
     @media (max-width: 600px) {
         .scoreButton {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 10px !important;
+            left: 10px !important;
             padding: 10px 5px;
         }
         .history {
@@ -1399,5 +1426,4 @@
     100% {
         top: 0;
     }
-    
 }

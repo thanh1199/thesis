@@ -1,39 +1,61 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import style from "../style.module.scss"
 import clsx from "clsx"
 import { useDispatch, useSelector } from "react-redux"
 import { changeQuestion } from "../reduxToolkit/14_Question"
+import { toAlert } from "../reduxToolkit/11_Alert"
 
+const handleAlert = ([type, mess], dispatch=() => {}) => {
+    dispatch(toAlert([type, mess]))
+    const showAlert = setTimeout(() => {
+        dispatch(toAlert([type, mess]))
+        return clearTimeout(showAlert)
+    }, 3000)
+}
 
 function Questions ({ show, close=()=>{} }) {
+    const dispatch = useDispatch()
     const data = useSelector(state => state.data)
     const [keyWord, setKeyWord] = useState("")
     const [content, setContent] = useState("")
     const [reload, setReload] = useState(false)
     const [active, setActive] = useState("Top Slide")
-    const questionInit = {incre: -1, id: "", userId: "", keyword: "", content: "", liked: ""}
+    const questionInit = useMemo(() => {
+        return {incre: -1, id: "", userId: "", keyword: "", content: "", liked: ""}
+    }, []) 
     const allQuestionsInit = [{...questionInit}]
     const [allQuestions, setAllQuestions] = useState(allQuestionsInit)
-
-    const dispatch = useDispatch()
     const keywordArray = allQuestions.map((ques) => ques.keyword)
-    const reloadAllQuestion = useCallback((newKeyWord="") => {
+
+    const reloadAllQuestion = useCallback((newKeyWord=active) => {
         fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allQuestions", { method: "GET" })
         .then((response) => response.json())
         .then((obj) => {
-            setAllQuestions(obj)
-            if (newKeyWord !== "") {
-                const newQuestion = obj.filter((o) => o.keyword === newKeyWord)[0]
-                dispatch(changeQuestion(newQuestion))
+            const newAllQuestion = obj.sort((a, b) => b.incre - a.incre)
+            const deletedFromAdmin = true
+            
+            const newQuestionFound = newAllQuestion.filter((o) => o.keyword === newKeyWord)
+            if (newQuestionFound.length === 0 && newKeyWord !== deletedFromAdmin && newKeyWord !== "Top Slide") {
+                handleAlert(["fail", "Question not found"], dispatch)
             }
+            if (newQuestionFound.length === 0) {
+                dispatch(changeQuestion(questionInit))
+                setActive("Top Slide")
+            } else {
+                dispatch(changeQuestion(newQuestionFound[0]))
+            }
+
             const toLike = setTimeout(() => {
-                document.getElementById("questionLikes").classList.remove(style.likeAnimation)
+                setAllQuestions(newAllQuestion)
+                if (document.getElementById("questionLikes")) {
+                    document.getElementById("questionLikes").classList.remove(style.likeAnimation)
+                }
                 return clearTimeout(toLike)
             }, 500)
             console.log("reloaded all of questions")
         })
         .catch(error => console.log(error))
-    }, [setAllQuestions, dispatch])
+    }, [setAllQuestions, active, setActive, dispatch, questionInit])
     useEffect(() => {
         reloadAllQuestion()
     }, [reloadAllQuestion])
@@ -47,6 +69,15 @@ function Questions ({ show, close=()=>{} }) {
         }, 1100)
     }
     
+    const handleActive = (newActive) => {
+        setActive(newActive)
+        const newIndex = keywordArray.indexOf(newActive)
+        if (newIndex >= 0) {
+            dispatch(changeQuestion(allQuestions[newIndex]))
+        } else {
+            dispatch(changeQuestion(allQuestionsInit[0]))
+        }
+    }
     if (active !== "Top Slide") {
         const u2 = keywordArray.indexOf(active)+active.split(" ").join("_")
         const u1mid =  document.getElementById("Top_Slide") ? (document.getElementById("Top_Slide").getBoundingClientRect().right + document.getElementById("Top_Slide").getBoundingClientRect().left) / 2 : 0
@@ -66,15 +97,6 @@ function Questions ({ show, close=()=>{} }) {
         })
     }
 
-    const handleActive = (newActive) => {
-        setActive(newActive)
-        const newIndex = keywordArray.indexOf(newActive)
-        if (newIndex >= 0) {
-            dispatch(changeQuestion(allQuestions[newIndex]))
-        } else {
-            dispatch(changeQuestion(allQuestionsInit[0]))
-        }
-    }
     const handleToLeft = (max=false) => {
         if (!max) {
             const now = keywordArray.indexOf(active)
@@ -197,6 +219,7 @@ function Questions ({ show, close=()=>{} }) {
 }
 
 function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
+    const dispatch = useDispatch()
     const data = useSelector(state => state.data)
     const question = useSelector(state => state.question)
     const [yourAnswer, setYourAnswer] = useState("")
@@ -257,8 +280,9 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         .then(() => loadAllAnswer())
         .catch(error => console.log(error))
     }
-    const handleDeleteQuestion = (quesIncre) => {
+    const handleDeleteQuestion = () => {
         toLeft()
+        handleAlert(["success", "Deleted Question"], dispatch)
         const deleteQuestion = new FormData()
         deleteQuestion.append("table", "question")
         deleteQuestion.append("incre", question.incre)
@@ -266,7 +290,10 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
             method: "POST",
             body: deleteQuestion
         })
-        .then(() => reloadQuestion())
+        .then(() => {
+            const deletedFromAdmin = true
+            reloadQuestion(deletedFromAdmin)
+        })
         .catch(error => console.log(error))
     }
     const handleToChangeQuestion = () => {
