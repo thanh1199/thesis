@@ -91,7 +91,7 @@ function ScoreSlide () {
     const handleSeeLog = () => {
         setShowHistory(!showHistory)
         if (!showHistory) {
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=seeLog" , { method: 'GET' })
+            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=seeLog" , { method: 'GET', mode: "no-cors" })
             .then((response) => response.json())
             .then((obj) => {
                 const historyLog_ = obj.filter((log) => log.fromtable === "userkiis_score")
@@ -174,7 +174,7 @@ function ScoreSlide () {
 
     const reloadAllUser = () => {
         const allRowsNow = [...allRows]
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET' })
+        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             var allUserAvoidAdmin = obj.filter((user) => user.userId !== "ADMIN")
@@ -227,7 +227,7 @@ function ScoreSlide () {
                 scoreData.append('plusArray', plusArray)
                 fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=scores", {
                     method: 'POST',
-                    body: scoreData
+                    body: scoreData, mode: "no-cors"
                 })
                 . then(() => reloadAllUser())
 
@@ -240,7 +240,7 @@ function ScoreSlide () {
                 scoreData.append('plus', data.plus)
                 fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=score&userId="+data.userId, {
                     method: 'POST',
-                    body: scoreData
+                    body: scoreData, mode: "no-cors"
                 })
                 .then(() => reloadAllUser())
                 handleReset(i)

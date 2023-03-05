@@ -11,9 +11,9 @@ function Important () {
     const important = data.words[now].important
     const dispatch = useDispatch();
     const handleSubmit = () => {
-            fetch(`https://webpg2-1.herokuapp.com/z2214505.php?step=controlImportant&userId=${data.userId}&wordId=${data.words[now].wordId}&newImportant=${!important?1:0}`, { method: 'GET' })
+            fetch(`https://webpg2-1.herokuapp.com/z2214505.php?step=controlImportant&userId=${data.userId}&wordId=${data.words[now].wordId}&newImportant=${!important?1:0}`, { method: 'GET', mode: "no-cors" })
             .then(() => {
-                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password, { method: 'GET' })
+                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password, { method: 'GET', mode: "no-cors" })
                 .then((response) => response.json())
                 .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
                 .catch(error_ => console.log(error_))

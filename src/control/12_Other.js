@@ -9,7 +9,7 @@ function OtherSlide ({show, close=()=>{}}) {
     const data = useSelector(state => state.data)
     const other = useSelector(state => state.other)
     const loadUserData = () => {
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET' })
+        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -31,7 +31,7 @@ function OtherSlide ({show, close=()=>{}}) {
         contentAdd.append('example', "")
         fetch(urlAddWord, {
             method: 'POST',
-            body: contentAdd
+            body: contentAdd, mode: "no-cors"
         })
         .then(() => {
             handleAlert("success", "Added successfully")

@@ -28,7 +28,7 @@ function Questions ({ show, close=()=>{} }) {
     const keywordArray = allQuestions.map((ques) => ques.keyword)
 
     const reloadAllQuestion = useCallback((newKeyWord=active) => {
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allQuestions", { method: "GET" })
+        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allQuestions", { method: "GET", mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             const newAllQuestion = obj.sort((a, b) => b.incre - a.incre)
@@ -133,7 +133,7 @@ function Questions ({ show, close=()=>{} }) {
 
         fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=question&userId="+data.userId, {
             method: "POST",
-            body: questionData
+            body: questionData, mode: "no-cors"
         })
         .then(() => {
             handleReload(keyWord)
@@ -229,7 +229,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
     const [changeQuestion, setChangeQuestion] = useState(false)
 
     const loadAllAnswer = useCallback(() => {
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allAnswers&quesIncre="+question.incre, { method: "GET" })
+        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allAnswers&quesIncre="+question.incre, { method: "GET", mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             setAllAnswer(obj)
@@ -250,7 +250,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         document.getElementById("questionLikes").classList.add(style.likeAnimation) ;
 
         const url = "https://webpg2-1.herokuapp.com/z2214505.php?step=like&incre="+question.incre+"&userId="+data.userId
-        fetch ( url, { method: "GET" })
+        fetch ( url, { method: "GET", mode: "no-cors" })
         .then(() => {
             reloadQuestion(question.keyword)
             console.log("liked/unliked")
@@ -263,7 +263,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         answerDelete.append("incre", incre)
         fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
             method: "POST",
-            body: answerDelete
+            body: answerDelete, mode: "no-cors"
         })
         .then(() => loadAllAnswer())
         .catch(error => console.log(error))
@@ -275,7 +275,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         answer.append("content", yourAnswer)
         fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=answer&userId="+data.userId, { 
             method: "POST",
-            body: answer
+            body: answer, mode: "no-cors"
         })
         .then(() => loadAllAnswer())
         .catch(error => console.log(error))
@@ -288,7 +288,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         deleteQuestion.append("incre", question.incre)
         fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
             method: "POST",
-            body: deleteQuestion
+            body: deleteQuestion, mode: "no-cors"
         })
         .then(() => {
             const deletedFromAdmin = true
@@ -312,7 +312,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         editQuestion.append("content", yourAnswer)
         fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=questionEdit&userId="+data.userId, { 
             method: "POST",
-            body: editQuestion
+            body: editQuestion, mode: "no-cors"
         })
         .then(() => reloadQuestion(question.keyword))
         .catch(error => console.log(error))
