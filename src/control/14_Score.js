@@ -91,7 +91,7 @@ function ScoreSlide () {
     const handleSeeLog = () => {
         setShowHistory(!showHistory)
         if (!showHistory) {
-            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=seeLog" , { method: 'GET', mode: "no-cors" })
+            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=seeLog" , { method: 'GET', mode: "no-cors" })
             .then((response) => response.json())
             .then((obj) => {
                 const historyLog_ = obj.filter((log) => log.fromtable === "userkiis_score")
@@ -174,7 +174,7 @@ function ScoreSlide () {
 
     const reloadAllUser = () => {
         const allRowsNow = [...allRows]
-        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             var allUserAvoidAdmin = obj.filter((user) => user.userId !== "ADMIN")
@@ -225,7 +225,7 @@ function ScoreSlide () {
                 scoreData.append('userIdArray', userIdArray)
                 scoreData.append('minusArray', minusArray)
                 scoreData.append('plusArray', plusArray)
-                fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=scores", {
+                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=scores", {
                     method: 'POST',
                     body: scoreData, mode: "no-cors"
                 })
@@ -238,7 +238,7 @@ function ScoreSlide () {
             if (data.minus!==0 || data.plus!==0) {
                 scoreData.append('minus', data.minus)
                 scoreData.append('plus', data.plus)
-                fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=score&userId="+data.userId, {
+                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=score&userId="+data.userId, {
                     method: 'POST',
                     body: scoreData, mode: "no-cors"
                 })
@@ -315,7 +315,7 @@ function ScoreSlideOnlyRead () {
         document.getElementById("score").classList.remove(style.loadingScoreAnimation) :
         document.getElementById("score").classList.add(style.loadingScoreAnimation) ;
 
-        const url = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&password="+data.password+"&userId="+data.userId
+        const url = "http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&password="+data.password+"&userId="+data.userId
         fetch ( url, { method: "GET" })
         .then((response) => response.json())
         .then((obj) => {

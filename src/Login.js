@@ -23,7 +23,7 @@ function Login () {
     }
     const allUser = useSelector(state => state.allUser)
     useEffect(() => {
-        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(getAllUser(obj)); console.log("loaded all of users, ready for login")})
         .catch(error => console.log(error))
@@ -62,7 +62,7 @@ function Login () {
         const yes = allUser.find((user) => user.userId === loginId && user.password === loginPassword)
         if (yes !== undefined) {
             setIsLogined(true)
-            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET', mode: "no-cors" })
+            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET', mode: "no-cors" })
             .then((response) => response.json())
             .then((obj) => {
                 // obj.words.sort(() => 0.5 - Math.random())
@@ -87,13 +87,13 @@ function Login () {
             const dataSignup = new FormData()
             dataSignup.append("userId", loginId)
             dataSignup.append("password", loginPassword)
-            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=newUser", {
+            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=newUser", {
                 method: "POST",
                 body: dataSignup, mode: "no-cors"
             })
             .then(() => {
                 setIsLogined(true)
-                fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
                 .then((response) => response.json())
                 .then((obj) => {
                     dispatch(getAllUser(obj))

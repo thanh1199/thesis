@@ -10,7 +10,7 @@ function Search () {
     const word = data.words[now].word
     return (
         <div className={clsx(style.ctrl)} id={clsx(style.ctrlSearch)}>
-            <a rel="noreferrer" target='_blank' href={`https://www.google.com/search?q=${word}+translate`}>Search</a>
+            <a rel="noreferrer" target='_blank' href={`http://www.google.com/search?q=${word}+translate`}>Search</a>
         </div>
     )
 }

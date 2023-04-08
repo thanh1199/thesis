@@ -28,7 +28,7 @@ function App() {
   const handleShow_AdminOther_Slide = (type="close") => {
     set_AdminOther_Slide(!adminOther_Slide)
     if (type === "loadAllWords") {
-      fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
       .then((response) => response.json())
       .then((objHaveDataOfWords) => objHaveDataOfWords.filter((o) => o.userId!==data.userId))
       .then((obj_duplicate) => {
@@ -50,7 +50,7 @@ function App() {
     if (type === "avoidAdminPassword") {
       var allUserAvoidAdmin = allUser.filter((user) => user.userId!=="ADMIN")
       dispatch(getAllUser(allUserAvoidAdmin))
-      fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
       .then((response) => response.json())
       .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
       .catch(error => console.log(error))

@@ -9,7 +9,7 @@ function OtherSlide ({show, close=()=>{}}) {
     const data = useSelector(state => state.data)
     const other = useSelector(state => state.other)
     const loadUserData = () => {
-        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -22,7 +22,7 @@ function OtherSlide ({show, close=()=>{}}) {
         }, 3000)
     }
 
-    const urlAddWord = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWord&userId="+data.userId
+    const urlAddWord = "http://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWord&userId="+data.userId
     const handleAdd = (i) => {
         var contentAdd = new FormData()
         contentAdd.append('word', other[i].word)
