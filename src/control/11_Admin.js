@@ -31,7 +31,7 @@ function AdminSlide ({show, close=()=>{}}) {
     const handleShowAllWords = (type="open") => {
         setShowAllWords(!showAllWords)
         if (type === "open") {
-            fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+            fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
             .then((response) => response.json())
             .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
             .catch(error => console.log(error))
@@ -43,7 +43,7 @@ function AdminSlide ({show, close=()=>{}}) {
     const handleShowUserWords = (type="open", userId=0) => {
         setShowUserWords([!showUserWords[0], userId])
         if (type === "open") {
-            fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allWords", { method: "GET" })
+            fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET" })
             .then((response) => response.json())
             .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
             .catch(error => console.log(error))
@@ -51,9 +51,9 @@ function AdminSlide ({show, close=()=>{}}) {
     }
     const handleKickUser = () => {
         handleShowUserWords("close")
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=kickUser&userId="+allUser[showUserWords[1]].userId, {method: "GET", mode: "no-cors"})
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=kickUser&userId="+allUser[showUserWords[1]].userId, {method: "GET", mode: "no-cors"})
         .then (() => {
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
             .then((response) => response.json())
             .then((obj) => obj.filter((user) => user.userId!=="ADMIN"))
             .then((allUserAvoidAdmin) => {
@@ -65,7 +65,7 @@ function AdminSlide ({show, close=()=>{}}) {
         })
     }
     const loadUserData = () => {
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -88,7 +88,7 @@ function AdminSlide ({show, close=()=>{}}) {
             contentAdd.append('example', "")
         }
         if (from !== undefined) {
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWord&userId="+data.userId, {
+            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWord&userId="+data.userId, {
                 method: 'POST',
                 body: contentAdd, mode: "no-cors"
             })

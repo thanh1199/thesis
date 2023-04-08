@@ -28,7 +28,7 @@ function Questions ({ show, close=()=>{} }) {
     const keywordArray = allQuestions.map((ques) => ques.keyword)
 
     const reloadAllQuestion = useCallback((newKeyWord=active) => {
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allQuestions", { method: "GET", mode: "no-cors" })
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allQuestions", { method: "GET", mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             const newAllQuestion = obj.sort((a, b) => b.incre - a.incre)
@@ -131,7 +131,7 @@ function Questions ({ show, close=()=>{} }) {
         questionData.append("keyWord", keyWord)
         questionData.append("content", content)
 
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=question&userId="+data.userId, {
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=question&userId="+data.userId, {
             method: "POST",
             body: questionData, mode: "no-cors"
         })
@@ -229,7 +229,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
     const [changeQuestion, setChangeQuestion] = useState(false)
 
     const loadAllAnswer = useCallback(() => {
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=allAnswers&quesIncre="+question.incre, { method: "GET", mode: "no-cors" })
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=allAnswers&quesIncre="+question.incre, { method: "GET", mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {
             setAllAnswer(obj)
@@ -249,7 +249,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         document.getElementById("questionLikes").classList.remove(style.likeAnimation) :
         document.getElementById("questionLikes").classList.add(style.likeAnimation) ;
 
-        const url = "https://webpg2-1.herokuapp.com/z2214505.php?step=like&incre="+question.incre+"&userId="+data.userId
+        const url = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=like&incre="+question.incre+"&userId="+data.userId
         fetch ( url, { method: "GET", mode: "no-cors" })
         .then(() => {
             reloadQuestion(question.keyword)
@@ -261,7 +261,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         const answerDelete = new FormData()
         answerDelete.append("table", "answer")
         answerDelete.append("incre", incre)
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
             method: "POST",
             body: answerDelete, mode: "no-cors"
         })
@@ -273,7 +273,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         const answer = new FormData()
         answer.append("quesIncre", question.incre)
         answer.append("content", yourAnswer)
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=answer&userId="+data.userId, { 
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=answer&userId="+data.userId, { 
             method: "POST",
             body: answer, mode: "no-cors"
         })
@@ -286,7 +286,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         const deleteQuestion = new FormData()
         deleteQuestion.append("table", "question")
         deleteQuestion.append("incre", question.incre)
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=queAnsDelete&userId="+data.userId, { 
             method: "POST",
             body: deleteQuestion, mode: "no-cors"
         })
@@ -310,7 +310,7 @@ function QuestionUnit ({ toLeft=()=>{}, reloadQuestion=()=>{} }) {
         const editQuestion = new FormData()
         editQuestion.append("incre", question.incre)
         editQuestion.append("content", yourAnswer)
-        fetch ("https://webpg2-1.herokuapp.com/z2214505.php?step=questionEdit&userId="+data.userId, { 
+        fetch ("https://kiisenglish.php.xdomain.jp/z2214505.php?step=questionEdit&userId="+data.userId, { 
             method: "POST",
             body: editQuestion, mode: "no-cors"
         })

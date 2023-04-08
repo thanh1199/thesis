@@ -2,7 +2,7 @@
 
 //dbconnect.php ; DB接続
 
-	define('DB_HOST','sv2.php.xdomain.ne.jp');
+	define('DB_HOST','mysql1.php.xdomain.ne.jp');
 	define('DB_NAME','kiisenglish_01');
 	define('DB_USER','kiisenglish_1');
 	define('DB_PASSWORD','binmin49');

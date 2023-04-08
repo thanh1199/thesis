@@ -25,7 +25,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const loadUserData = () => {
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -70,12 +70,12 @@ function ComExaSilde ({ name="", close=()=>{} }) {
     let urlAddComExa = ""
     if (name === "Comment") {
         data_ = data.words[now].comments
-        urlDeleteComExa = "https://webpg2-1.herokuapp.com/z2214505.php?step=controlCommentDelete&userId="+data.userId+"&wordId="+data.words[now].wordId+"&commentId="
-        urlAddComExa = "https://webpg2-1.herokuapp.com/z2214505.php?step=controlCommentAdd_Edit&userId="+data.userId+"&wordId="+data.words[now].wordId
+        urlDeleteComExa = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=controlCommentDelete&userId="+data.userId+"&wordId="+data.words[now].wordId+"&commentId="
+        urlAddComExa = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=controlCommentAdd_Edit&userId="+data.userId+"&wordId="+data.words[now].wordId
     } else {
         data_ = data.words[now].examples
-        urlDeleteComExa = "https://webpg2-1.herokuapp.com/z2214505.php?step=controlExampleDelete&userId="+data.userId+"&wordId="+data.words[now].wordId+"&exampleId="
-        urlAddComExa = "https://webpg2-1.herokuapp.com/z2214505.php?step=controlExampleAdd_Edit&userId="+data.userId+"&wordId="+data.words[now].wordId
+        urlDeleteComExa = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=controlExampleDelete&userId="+data.userId+"&wordId="+data.words[now].wordId+"&exampleId="
+        urlAddComExa = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=controlExampleAdd_Edit&userId="+data.userId+"&wordId="+data.words[now].wordId
     }
     const deleteComExa = (u) => {
         fetch(u, {method: 'GET'})
@@ -192,7 +192,7 @@ function EditAddSlide ({name="", close = () => {}}) {
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const loadUserData = () => {
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -230,7 +230,7 @@ function EditAddSlide ({name="", close = () => {}}) {
     }
 
     if (name === "Edit") {
-        const urlEditWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=editWord&userId="+data.userId+"&wordId="+data.words[now].wordId
+        const urlEditWord = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=editWord&userId="+data.userId+"&wordId="+data.words[now].wordId
         var contentEdit = new FormData()
         contentEdit.append('word', word)
         contentEdit.append('mean', mean)
@@ -308,8 +308,8 @@ function EditAddSlide ({name="", close = () => {}}) {
             </div>
         )
     } else if (name === "Add" || name === "Add Word To Everyone") {
-        const urlAddWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWord&userId="+data.userId
-        const urlAddWordToEveryOne = "https://webpg2-1.herokuapp.com/z2214505.php?step=addNewWordToEveryOne&userId="+data.userId
+        const urlAddWord = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWord&userId="+data.userId
+        const urlAddWordToEveryOne = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWordToEveryOne&userId="+data.userId
         var contentAdd = new FormData()
         contentAdd.append('word', word)
         contentAdd.append('mean', mean)
@@ -395,9 +395,9 @@ function ClearSlide ({ close=() => {} }) {
     const [canClear, setCanClear] = useState(true)
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
-    const urlDeleteWord = "https://webpg2-1.herokuapp.com/z2214505.php?step=clearWord&userId="+data.userId+"&wordId="+data.words[now].wordId
+    const urlDeleteWord = "https://kiisenglish.php.xdomain.jp/z2214505.php?step=clearWord&userId="+data.userId+"&wordId="+data.words[now].wordId
     const loadUserData = () => {
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -528,12 +528,12 @@ function DataSlide ({show, close=()=>{}}) {
                 setOldP(newP)
                 var newPassword = new FormData()
                 newPassword.append("newPassword", newP)
-                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=changePassword&userId="+data.userId+"&password="+data.password , { 
+                fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=changePassword&userId="+data.userId+"&password="+data.password , { 
                     method: 'POST',
                     body: newPassword, mode: "no-cors"
                 })
                 .then(() => {
-                    fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET', mode: "no-cors" })
+                    fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET', mode: "no-cors" })
                     .then((response) => response.json())
                     .then((obj) => {
                         dispatch(reloadData(obj))
@@ -550,12 +550,12 @@ function DataSlide ({show, close=()=>{}}) {
             setIsSameId(true)
             var newId = new FormData()
             newId.append("newId", newI)
-            fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=changeId&userId="+data.userId+"&password="+data.password , { 
+            fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=changeId&userId="+data.userId+"&password="+data.password , { 
                 method: 'POST',
                 body: newId, mode: "no-cors"
             })
             .then(() => {
-                fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=1&userId="+newI+"&password="+data.password , { method: 'GET' , mode: "no-cors"})
+                fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+newI+"&password="+data.password , { method: 'GET' , mode: "no-cors"})
                 .then((response) => response.json())
                 .then((obj) => {
                     dispatch(reloadData(obj))
@@ -698,7 +698,7 @@ function DeleteAccountSlide ({ userId, show, close=()=>{}, logout=()=>{} }) {
     const dispatch = useDispatch()
     const DeleAccount = () => {
         logout()
-        fetch("https://webpg2-1.herokuapp.com/z2214505.php?step=kickUser&userId="+userId, {
+        fetch("https://kiisenglish.php.xdomain.jp/z2214505.php?step=kickUser&userId="+userId, {
             method: "GET", mode: "no-cors"
         })
         .then(() => {
