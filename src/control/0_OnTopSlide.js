@@ -25,7 +25,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const loadUserData = () => {
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET',  })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -99,7 +99,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
         if (document.getElementById('editId').innerHTML === "") {
             fetch(urlAddComExa, {
                 method: 'POST',
-                body: content, mode: "no-cors"
+                body: content, 
             })
             .then(() => {
                 loadUserData()
@@ -109,7 +109,7 @@ function ComExaSilde ({ name="", close=()=>{} }) {
             const urlEdit = urlAddComExa+"&editId="+document.getElementById('editId').innerHTML
             fetch(urlEdit, {
                 method: 'POST',
-                body: content, mode: "no-cors"
+                body: content, 
             })
             .then(() => {
                 loadUserData()
@@ -192,7 +192,7 @@ function EditAddSlide ({name="", close = () => {}}) {
     const data = useSelector(state => state.data)
     const now = useSelector(state => state.move)
     const loadUserData = () => {
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET',  })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -243,7 +243,7 @@ function EditAddSlide ({name="", close = () => {}}) {
             close()
             fetch(urlEditWord, {
                 method: 'POST',
-                body: contentEdit, mode: "no-cors"
+                body: contentEdit, 
             })
             .then(() => {
                 handleAlert(["success","Editted successfully"], dispatch)
@@ -319,7 +319,7 @@ function EditAddSlide ({name="", close = () => {}}) {
         const handleAdd = () => {
             fetch(name === "Add" ? urlAddWord : urlAddWordToEveryOne, {
                 method: 'POST',
-                body: contentAdd, mode: "no-cors"
+                body: contentAdd, 
             })
             .then(() => {
                 handleAlert(["success","Added new word successfully"], dispatch)
@@ -397,7 +397,7 @@ function ClearSlide ({ close=() => {} }) {
     const now = useSelector(state => state.move)
     const urlDeleteWord = "http://kiisenglish.php.xdomain.jp/z2214505.php?step=clearWord&userId="+data.userId+"&wordId="+data.words[now].wordId
     const loadUserData = () => {
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET',  })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -405,7 +405,7 @@ function ClearSlide ({ close=() => {} }) {
     const handleClear = () => {
         setCanClear(false)
         fetch(urlDeleteWord, {
-            method: 'POST', mode: "no-cors"
+            method: 'POST', 
         })
         .then(() => {loadUserData(); console.log("deleted word and loaded all of new words")})
         .then(() => {
@@ -530,10 +530,10 @@ function DataSlide ({show, close=()=>{}}) {
                 newPassword.append("newPassword", newP)
                 fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=changePassword&userId="+data.userId+"&password="+data.password , { 
                     method: 'POST',
-                    body: newPassword, mode: "no-cors"
+                    body: newPassword, 
                 })
                 .then(() => {
-                    fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET', mode: "no-cors" })
+                    fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+newP , { method: 'GET',  })
                     .then((response) => response.json())
                     .then((obj) => {
                         dispatch(reloadData(obj))
@@ -552,10 +552,10 @@ function DataSlide ({show, close=()=>{}}) {
             newId.append("newId", newI)
             fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=changeId&userId="+data.userId+"&password="+data.password , { 
                 method: 'POST',
-                body: newId, mode: "no-cors"
+                body: newId, 
             })
             .then(() => {
-                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+newI+"&password="+data.password , { method: 'GET' , mode: "no-cors"})
+                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+newI+"&password="+data.password , { method: 'GET' , })
                 .then((response) => response.json())
                 .then((obj) => {
                     dispatch(reloadData(obj))
@@ -699,7 +699,7 @@ function DeleteAccountSlide ({ userId, show, close=()=>{}, logout=()=>{} }) {
     const DeleAccount = () => {
         logout()
         fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=kickUser&userId="+userId, {
-            method: "GET", mode: "no-cors"
+            method: "GET", 
         })
         .then(() => {
             dispatch(reloadData({}))

@@ -14,7 +14,7 @@ function Clear () {
     const handleClick = () => {
         dispatch(setShowClear())
     }
-    const content = data.words.length === 1 ? "Data" : "Clear"
+    const content = data.words.length === 1 ? "Default" : "Clear"
 
     if (showClear) {
         return (
@@ -31,7 +31,7 @@ function Clear () {
         return (
             <div 
                 className={clsx(style.ctrl)} 
-                id={clsx(style.ctrlClear)}
+                id={clsx(style.ctrlDefault)}
                 onClick={() => handleClick()}
             >{content}</div>
         )

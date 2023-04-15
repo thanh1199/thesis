@@ -23,9 +23,12 @@ function Login () {
     }
     const allUser = useSelector(state => state.allUser)
     useEffect(() => {
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET' })
         .then((response) => response.json())
-        .then((obj) => {dispatch(getAllUser(obj)); console.log("loaded all of users, ready for login")})
+        .then((obj) => {
+            dispatch(getAllUser(obj))
+            console.log("loaded all of users, ready for login")}
+        )
         .catch(error => console.log(error))
     }, [dispatch])
     const [isLogin, setIsLogin] = useState(false)
@@ -62,7 +65,7 @@ function Login () {
         const yes = allUser.find((user) => user.userId === loginId && user.password === loginPassword)
         if (yes !== undefined) {
             setIsLogined(true)
-            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET', mode: "no-cors" })
+            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+loginId+"&password="+loginPassword, { method: 'GET',  })
             .then((response) => response.json())
             .then((obj) => {
                 // obj.words.sort(() => 0.5 - Math.random())
@@ -89,11 +92,11 @@ function Login () {
             dataSignup.append("password", loginPassword)
             fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=newUser", {
                 method: "POST",
-                body: dataSignup, mode: "no-cors"
+                body: dataSignup, 
             })
             .then(() => {
                 setIsLogined(true)
-                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+                fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET',  })
                 .then((response) => response.json())
                 .then((obj) => {
                     dispatch(getAllUser(obj))

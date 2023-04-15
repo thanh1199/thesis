@@ -31,7 +31,7 @@ function AdminSlide ({show, close=()=>{}}) {
     const handleShowAllWords = (type="open") => {
         setShowAllWords(!showAllWords)
         if (type === "open") {
-            fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+            fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET",  })
             .then((response) => response.json())
             .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
             .catch(error => console.log(error))
@@ -51,9 +51,9 @@ function AdminSlide ({show, close=()=>{}}) {
     }
     const handleKickUser = () => {
         handleShowUserWords("close")
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=kickUser&userId="+allUser[showUserWords[1]].userId, {method: "GET", mode: "no-cors"})
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=kickUser&userId="+allUser[showUserWords[1]].userId, {method: "GET", })
         .then (() => {
-            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET', mode: "no-cors" })
+            fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=getAllUser" , { method: 'GET',  })
             .then((response) => response.json())
             .then((obj) => obj.filter((user) => user.userId!=="ADMIN"))
             .then((allUserAvoidAdmin) => {
@@ -65,7 +65,7 @@ function AdminSlide ({show, close=()=>{}}) {
         })
     }
     const loadUserData = () => {
-        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET', mode: "no-cors" })
+        fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=1&userId="+data.userId+"&password="+data.password , { method: 'GET',  })
         .then((response) => response.json())
         .then((obj) => {dispatch(reloadData(obj)); console.log("loaded all of data for "+obj.userId)})
         .catch(error => console.log(error))
@@ -90,7 +90,7 @@ function AdminSlide ({show, close=()=>{}}) {
         if (from !== undefined) {
             fetch("http://kiisenglish.php.xdomain.jp/z2214505.php?step=addNewWord&userId="+data.userId, {
                 method: 'POST',
-                body: contentAdd, mode: "no-cors"
+                body: contentAdd, 
             })
             .then(() => {
                 handleAlert(["success", "Added successfully"])

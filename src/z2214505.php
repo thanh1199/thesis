@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $dbh->query($sql);
     }
     if ($_GET['step'] == "1") {
-        $sql = "SELECT * FROM userkiis where userId = '$userId' and password = '$password'";
+        $sql = "SELECT * FROM user where userId = '$userId' and password = '$password'";
         $stmt = $dbh->query($sql);
         foreach ($stmt as $row) {
             $data->{'userId'} = $row['userId'];
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } 
     if ($_GET['step'] === "kickUser") {
         $sql="
-        DELETE FROM userkiis WHERE userId='$userId';
+        DELETE FROM user WHERE userId='$userId';
         DELETE FROM words WHERE userId='$userId';
         DELETE FROM comment WHERE userId='$userId';
         DELETE FROM example WHERE userId='$userId'
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $dbh->query($sql);
 
         $id = date("Y/m/d_H:i:s");
-        $fromtable = "userkiis";
+        $fromtable = "user";
         $content = "Kicked ".$userId." out";
         $sql = "INSERT INTO adminlog (id,fromtable,userId,content) VALUES (:i,:frtable,:userI,:cont)";
         $stmt = $dbh->prepare($sql);
@@ -138,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         getAll("words", $dbh);
     }
     if ($_GET['step'] === "getAllUser") {
-        getAll("userkiis", $dbh);
+        getAll("user", $dbh);
     }
     if ($_GET['step'] === "seeLog") {
         getAll("adminlog", $dbh);
@@ -267,7 +267,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $comment = $_POST['comment'];
         $example = $_POST['example'];
 
-        $sql = "SELECT * FROM userkiis";
+        $sql = "SELECT * FROM user";
         $stmt = $dbh->query($sql);
         $allUser = [];
         foreach($stmt as $row) {
@@ -353,7 +353,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $dbh->query($sql);
     }
     if ($_GET['step'] === "changePassword") {
-        $sql = "SELECT * FROM userkiis where userId = '$userId' and password = '$password'";
+        $sql = "SELECT * FROM user where userId = '$userId' and password = '$password'";
         $stmt = $dbh->query($sql);
         $yes = false;
         foreach ($stmt as $row) {
@@ -361,12 +361,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
         if ($yes) {
             $newPassword = $_POST["newPassword"];
-            $sql = "UPDATE userkiis SET password = '$newPassword' WHERE userId = '$userId'";
+            $sql = "UPDATE user SET password = '$newPassword' WHERE userId = '$userId'";
             $dbh->query($sql);
         }
     }
     if ($_GET['step'] === "changeId") {
-        $sql = "SELECT * FROM userkiis where userId = '$userId' and password = '$password'";
+        $sql = "SELECT * FROM user where userId = '$userId' and password = '$password'";
         $stmt = $dbh->query($sql);
         $yes = false;
         foreach ($stmt as $row) {
@@ -375,7 +375,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if ($yes) {
             $newId = $_POST["newId"];
             $sql = "
-                UPDATE userkiis SET userId = '$newId' WHERE userId = '$userId';
+                UPDATE user SET userId = '$newId' WHERE userId = '$userId';
                 UPDATE words SET userId = '$newId' WHERE userId = '$userId';
                 UPDATE comment SET userId = '$newId' WHERE userId = '$userId';
                 UPDATE example SET userId = '$newId' WHERE userId = '$userId';
@@ -387,7 +387,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $userId = $_POST['userId'];
         $password = $_POST['password'];
 
-        $sql = "INSERT INTO userkiis (userId,password) VALUES (:userI,:pass)";
+        $sql = "INSERT INTO user (userId,password) VALUES (:userI,:pass)";
         $stmt = $dbh->prepare($sql);
         $params = array(':userI'=>$userId,':pass'=>$password);
         $stmt->execute($params);
@@ -397,7 +397,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $stmt->execute($params);
 
         $id = date("Y/m/d_H:i:s");
-        $fromtable = "userkiis";
+        $fromtable = "user";
         $content = "init";
         $sql = "INSERT INTO adminlog (id,fromtable,userId,content) VALUES (:i,:frtable,:userI,:cont)";
         $stmt = $dbh->prepare($sql);
@@ -405,7 +405,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $stmt->execute($params);
     }
     function checkLimit500 ($dbh) {
-        $sql = "SELECT * FROM adminlog WHERE fromtable='userkiis_score'";
+        $sql = "SELECT * FROM adminlog WHERE fromtable='user_score'";
         $stmt = $dbh->query($sql);
         $allUser = [];
         $count = 0;
@@ -424,7 +424,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($_GET['step'] === "score") {
         checkLimit500($dbh);
-        $sql = "SELECT * FROM userkiis where userId = '$userId'";
+        $sql = "SELECT * FROM user where userId = '$userId'";
         $stmt = $dbh->query($sql);
         $yes = false;
         foreach ($stmt as $row) {
@@ -436,11 +436,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $plus = $_POST["plus"];
             $newScore = intval($score) - intval($minus) + intval($plus);
             if ($newScore != $score) {
-                $sql = "UPDATE userkiis SET score = '$newScore' WHERE userId = '$userId'";
+                $sql = "UPDATE user SET score = '$newScore' WHERE userId = '$userId'";
                 $dbh->query($sql);
 
                 $id = date("Y/m/d_H:i:s");
-                $fromtable = "userkiis_score";
+                $fromtable = "user_score";
                 $content = "*".$userId."_(".$score." → ".$newScore.")";
                 $sql = "INSERT INTO adminlog (id,fromtable,userId,content) VALUES (:i,:frtable,:userI,:cont)";
                 $stmt = $dbh->prepare($sql);
@@ -455,11 +455,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $stmt = $dbh->query($sql);
         $count = intval($stmt->fetchColumn());
         if ($count > 5) {
-            $sql = "DELETE TOP (1) FROM adminlog WHERE fromtable='userkiis_score'";
+            $sql = "DELETE TOP (1) FROM adminlog WHERE fromtable='user_score'";
             $dbh->query($sql);
         }
 
-        $sql = "SELECT * FROM userkiis";
+        $sql = "SELECT * FROM user";
         $stmt = $dbh->query($sql);
         $allUser = [];
         foreach ($stmt as $row) {
@@ -493,13 +493,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 }
                 if ($yes) {
                     $newScore = intval($score) - intval($minus) + intval($plus);
-                    $sql = "UPDATE userkiis SET score = '$newScore' WHERE userId = '$userId'";
+                    $sql = "UPDATE user SET score = '$newScore' WHERE userId = '$userId'";
                     $dbh->query($sql);
                     $content = $content."*".$userId."_(".$score." → ".$newScore.") ";
                 }
             }
             if ($content != "") {
-                $fromtable = "userkiis_score";
+                $fromtable = "user_score";
                 $sql = "INSERT INTO adminlog (id,fromtable,userId,content) VALUES (:i,:frtable,:userI,:cont)";
                 $stmt = $dbh->prepare($sql);
                 $params = array(':i'=>$id, ':frtable'=>$fromtable, ':userI'=>"multi-user",':cont'=>$content);
@@ -531,7 +531,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $incre = $_POST['incre'];
         $content = $_POST['content'];
 
-        $sql = "SELECT * FROM userkiis";
+        $sql = "SELECT * FROM user";
         $stmt = $dbh->query($sql);
         $yes = false;
         foreach ($stmt as $row) {
@@ -546,7 +546,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
     if ($_GET['step'] === "queAnsDelete") {
-        $sql = "SELECT * FROM userkiis";
+        $sql = "SELECT * FROM user";
         $stmt = $dbh->query($sql);
         $yes = false;
         foreach ($stmt as $row) {

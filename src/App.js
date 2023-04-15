@@ -28,7 +28,7 @@ function App() {
   const handleShow_AdminOther_Slide = (type="close") => {
     set_AdminOther_Slide(!adminOther_Slide)
     if (type === "loadAllWords") {
-      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET",  })
       .then((response) => response.json())
       .then((objHaveDataOfWords) => objHaveDataOfWords.filter((o) => o.userId!==data.userId))
       .then((obj_duplicate) => {
@@ -50,7 +50,7 @@ function App() {
     if (type === "avoidAdminPassword") {
       var allUserAvoidAdmin = allUser.filter((user) => user.userId!=="ADMIN")
       dispatch(getAllUser(allUserAvoidAdmin))
-      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET", mode: "no-cors" })
+      fetch ("http://kiisenglish.php.xdomain.jp/z2214505.php?step=allWords", { method: "GET",  })
       .then((response) => response.json())
       .then((obj) => {dispatch(reloadOther(obj)); console.log("loaded all of words width duplicate")})
       .catch(error => console.log(error))
@@ -131,7 +131,7 @@ function App() {
     <div className={clsx(style.alertFail, alert[1].show? style.alertShow: "")} >{alert[1].mess}</div>
     <div className={clsx(style.alertQuest, alert[2].show? style.alertShow: "")} >{alert[2].mess}</div>
     <div id={clsx(style.app)}>
-      <div className={data.words[now].important ? clsx(style.importantWord) : clsx(style.importantSpace)}/>
+      <div className={data.words[now].important === "1" ? clsx(style.importantWord) : clsx(style.importantSpace)}/>
       <div className={clsx(style.ask)}>{data.words[now].word}</div>
       <input 
         className={clsx(style.answer)} 
